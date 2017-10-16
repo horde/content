@@ -16,7 +16,7 @@
   <email>mrubinsk@horde.org</email>
   <active>yes</active>
  </lead>
- <date>2016-11-09</date>
+ <date>2017-10-13</date>
  <version>
   <release>3.0.0</release>
   <api>3.0.0</api>
@@ -67,11 +67,11 @@
     <file name=".htaccess" role="horde" />
     <file name="routes.php" role="horde" />
    </dir> <!-- /config -->
-   <dir name="docs">
+   <dir name="doc">
     <file name="CHANGES" role="doc" />
     <file name="RELEASE_NOTES" role="doc" />
     <file name="TODO.txt" role="doc" />
-   </dir> <!-- /docs -->
+   </dir> <!-- /doc -->
    <dir name="lib">
     <dir name="Linkbacks">
      <file name="Linkback.php" role="horde" />
@@ -227,6 +227,7 @@
  </usesrole>
  <phprelease>
   <filelist>
+   <install as="content/.htaccess" name=".htaccess" />
    <install as="content/app/controllers/ApplicationController.php" name="app/controllers/ApplicationController.php" />
    <install as="content/app/controllers/TagController.php" name="app/controllers/TagController.php" />
    <install as="content/app/views/Tag/recentTags.html.php" name="app/views/Tag/recentTags.html.php" />
@@ -239,9 +240,9 @@
    <install as="content-untag" name="bin/content-untag" />
    <install as="content/config/.htaccess" name="config/.htaccess" />
    <install as="content/config/routes.php" name="config/routes.php" />
-   <install as="CHANGES" name="docs/CHANGES" />
-   <install as="RELEASE_NOTES" name="docs/RELEASE_NOTES" />
-   <install as="TODO.txt" name="docs/TODO.txt" />
+   <install as="CHANGES" name="doc/CHANGES" />
+   <install as="RELEASE_NOTES" name="doc/RELEASE_NOTES" />
+   <install as="TODO.txt" name="doc/TODO.txt" />
    <install as="content/lib/.htaccess" name="lib/.htaccess" />
    <install as="content/lib/Application.php" name="lib/Application.php" />
    <install as="content/lib/Exception.php" name="lib/Exception.php" />
@@ -273,7 +274,6 @@
    <install as="Content/Sql/Pdo/MysqlTest.php" name="test/Content/Sql/Pdo/MysqlTest.php" />
    <install as="Content/Sql/Pdo/PgsqlTest.php" name="test/Content/Sql/Pdo/PgsqlTest.php" />
    <install as="Content/Sql/Pdo/SqliteTest.php" name="test/Content/Sql/Pdo/SqliteTest.php" />
-   <install as="content/.htaccess" name=".htaccess" />
   </filelist>
  </phprelease>
  <changelog>
@@ -529,10 +529,10 @@
    <stability>
     <release>beta</release>
     <api>beta</api></stability>
-   <date>2016-11-09</date>
+   <date>2017-10-13</date>
    <license uri="http://www.horde.org/licenses/bsd">BSD-2-Clause</license>
    <notes>
-* 
+* [jan] Officially support PHP 7.
    </notes>
   </release>
  </changelog>
