@@ -16,7 +16,7 @@
   <email>mrubinsk@horde.org</email>
   <active>yes</active>
  </lead>
- <date>2017-10-13</date>
+ <date>2017-10-20</date>
  <version>
   <release>3.0.0</release>
   <api>3.0.0</api>
@@ -124,7 +124,6 @@
      <file name="Base.php" role="test" />
      <file name="bootstrap.php" role="test" />
      <file name="conf.php.dist" role="test" />
-     <file name="phpunit.xml" role="test" />
     </dir> <!-- /test/Content -->
    </dir> <!-- /test -->
    <file name=".htaccess" role="horde" />
@@ -247,14 +246,14 @@
    <install as="content/lib/Application.php" name="lib/Application.php" />
    <install as="content/lib/Exception.php" name="lib/Exception.php" />
    <install as="content/lib/Indexer.php" name="lib/Indexer.php" />
-   <install as="content/lib/ObjectMapper.php" name="lib/ObjectMapper.php" />
-   <install as="content/lib/Tagger.php" name="lib/Tagger.php" />
    <install as="content/lib/Linkbacks/Linkback.php" name="lib/Linkbacks/Linkback.php" />
    <install as="content/lib/Linkbacks/LinkbackMapper.php" name="lib/Linkbacks/LinkbackMapper.php" />
+   <install as="content/lib/ObjectMapper.php" name="lib/ObjectMapper.php" />
    <install as="content/lib/Objects/Manager.php" name="lib/Objects/Manager.php" />
    <install as="content/lib/Objects/Object.php" name="lib/Objects/Object.php" />
    <install as="content/lib/Relationships/Relationship.php" name="lib/Relationships/Relationship.php" />
    <install as="content/lib/Relationships/RelationshipMapper.php" name="lib/Relationships/RelationshipMapper.php" />
+   <install as="content/lib/Tagger.php" name="lib/Tagger.php" />
    <install as="content/lib/Tags/Tag.php" name="lib/Tags/Tag.php" />
    <install as="content/lib/Tags/TagMapper.php" name="lib/Tags/TagMapper.php" />
    <install as="content/lib/Types/Manager.php" name="lib/Types/Manager.php" />
@@ -266,7 +265,6 @@
    <install as="Content/Base.php" name="test/Content/Base.php" />
    <install as="Content/bootstrap.php" name="test/Content/bootstrap.php" />
    <install as="Content/conf.php.dist" name="test/Content/conf.php.dist" />
-   <install as="Content/phpunit.xml" name="test/Content/phpunit.xml" />
    <install as="Content/Sql/Base.php" name="test/Content/Sql/Base.php" />
    <install as="Content/Sql/MysqliTest.php" name="test/Content/Sql/MysqliTest.php" />
    <install as="Content/Sql/MysqlTest.php" name="test/Content/Sql/MysqlTest.php" />
@@ -529,7 +527,7 @@
    <stability>
     <release>beta</release>
     <api>beta</api></stability>
-   <date>2017-10-13</date>
+   <date>2017-10-20</date>
    <license uri="http://www.horde.org/licenses/bsd">BSD-2-Clause</license>
    <notes>
 * [jan] Officially support PHP 7.
