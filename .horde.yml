@@ -5,3 +5,44 @@ full: Tagging application
 description: This application provides tagging support for the other Horde applications.
 list:
 type: application
+authors:
+  -
+    name: Chuck Hagenbuch
+    user: chuck
+    email: chuck@horde.org
+    active: true
+    role: lead
+  -
+    name: Michael J Rubinsky
+    user: mrubinsk
+    email: mrubinsk@horde.org
+    active: true
+    role: lead
+version:
+  release: 3.0.0
+  api: 3.0.0
+state:
+  release: beta
+  api: beta
+license:
+  identifier: BSD-2-Clause
+  uri: http://www.horde.org/licenses/bsd
+dependencies:
+  required:
+    php: ^5.3 || ^7
+    pear:
+      pear.horde.org/Horde_Core: ^2
+      pear.horde.org/Horde_Date: ^2
+      pear.horde.org/Horde_Exception: ^2
+      pear.horde.org/Horde_Db: ^2
+      pear.horde.org/Horde_Injector: ^2
+      pear.horde.org/Horde_Rdo: ^2
+      pear.horde.org/Horde_Util: ^2
+    ext:
+      gettext: '*'
+      json: '*'
+  optional:
+    pear:
+      pear.horde.org/Horde_Argv: ^2
+      pear.horde.org/Horde_Controller: ^2
+      pear.horde.org/Horde_ElasticSearch: ^1
