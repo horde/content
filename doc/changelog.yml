@@ -9,12 +9,22 @@
     identifier: BSD-2-Clause
     uri: http://www.horde.org/licenses/bsd
   notes:
+2.0.7:
+  api: 2.0.0
+  state:
+    release: stable
+    api: stable
+  date: 2017-09-19
+  license:
+    identifier: BSD-2-Clause
+    uri: http://www.horde.org/licenses/bsd
+  notes:
 2.0.6:
   api: 2.0.0
   state:
     release: stable
     api: stable
-  date: 2016-01-13
+  date: 2017-09-19
   license:
     identifier: BSD-2-Clause
     uri: http://www.horde.org/licenses/bsd
