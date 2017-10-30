@@ -3,7 +3,6 @@ v2.0.7-git
 ----------
 
 
-
 ------
 v2.0.6
 ------
@@ -55,7 +54,19 @@ v2.0.1
 v2.0.0
 ------
 
-[jan] Support Horde 5.
+First stable release for Horde 5.
+
+
+-----------
+v2.0.0beta1
+-----------
+
+First beta release for Horde 5.
+
+
+------
+v1.0.4
+------
 
 
 ------
@@ -90,5 +101,34 @@ v1.0.1
 v1.0.0
 ------
 
+First stable release for Horde 4.
 [jan] Fix case-insensitive filtering of duplicate tags (Bug #9617).
+
+
+---------
+v1.0.0RC2
+---------
+
+Second release candidate for Horde 4.
 [jan] Rename all scripts to be prefixed with content- (Request #9647).
+
+
+---------
+v1.0.0RC1
+---------
+
+First release candidate for Horde 4.
+
+
+-----------
+v1.0.0beta1
+-----------
+
+First beta release for Horde 4.
+
+
+------------
+v1.0.0alpha1
+------------
+
+First alpha release for Horde 4.
