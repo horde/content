@@ -7,16 +7,16 @@ list:
 type: application
 authors:
   -
-    name: Chuck Hagenbuch
-    user: chuck
-    email: chuck@horde.org
-    active: true
-    role: lead
-  -
     name: Michael J Rubinsky
     user: mrubinsk
     email: mrubinsk@horde.org
     active: true
+    role: lead
+  -
+    name: Chuck Hagenbuch
+    user: chuck
+    email: chuck@horde.org
+    active: false
     role: lead
 version:
   release: 3.0.0
