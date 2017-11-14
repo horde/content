@@ -5,18 +5,18 @@
  <summary>Tagging application</summary>
  <description>This application provides tagging support for the other Horde applications.</description>
  <lead>
-  <name>Chuck Hagenbuch</name>
-  <user>chuck</user>
-  <email>chuck@horde.org</email>
-  <active>yes</active>
- </lead>
- <lead>
   <name>Michael J Rubinsky</name>
   <user>mrubinsk</user>
   <email>mrubinsk@horde.org</email>
   <active>yes</active>
  </lead>
- <date>2017-09-19</date>
+ <lead>
+  <name>Chuck Hagenbuch</name>
+  <user>chuck</user>
+  <email>chuck@horde.org</email>
+  <active>no</active>
+ </lead>
+ <date>2017-11-14</date>
  <version>
   <release>2.0.7</release>
   <api>2.0.0</api>
@@ -529,7 +529,7 @@
    <stability>
     <release>stable</release>
     <api>stable</api></stability>
-   <date>2017-09-19</date>
+   <date>2017-11-14</date>
    <license uri="http://www.horde.org/licenses/bsd">BSD-2-Clause</license>
    <notes>
 * 
