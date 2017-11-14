@@ -124,7 +124,6 @@
      <file name="Base.php" role="test" />
      <file name="bootstrap.php" role="test" />
      <file name="conf.php.dist" role="test" />
-     <file name="phpunit.xml" role="test" />
     </dir> <!-- /test/Content -->
    </dir> <!-- /test -->
    <file name=".htaccess" role="horde" />
@@ -265,7 +264,6 @@
    <install as="Content/Base.php" name="test/Content/Base.php" />
    <install as="Content/bootstrap.php" name="test/Content/bootstrap.php" />
    <install as="Content/conf.php.dist" name="test/Content/conf.php.dist" />
-   <install as="Content/phpunit.xml" name="test/Content/phpunit.xml" />
    <install as="Content/Sql/Base.php" name="test/Content/Sql/Base.php" />
    <install as="Content/Sql/MysqliTest.php" name="test/Content/Sql/MysqliTest.php" />
    <install as="Content/Sql/MysqlTest.php" name="test/Content/Sql/MysqlTest.php" />
