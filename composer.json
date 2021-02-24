@@ -45,9 +45,6 @@
     "autoload": {
         "psr-0": {
             "Content": "lib/"
-        },
-        "psr-4": {
-            "Horde\\Content\\": "src/"
         }
     },
     "bin": [
