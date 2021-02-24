@@ -1,6 +1,6 @@
 ---
-3.0.0:
-  api: 3.0.0
+3.0.0alpha1:
+  api: 3.0.0alpha1
   state:
     release: beta
     api: beta
@@ -8,7 +8,7 @@
   license:
     identifier: BSD-2-Clause
     uri: http://www.horde.org/licenses/bsd
-  notes:
+  notes: ~
 2.0.7:
   api: 2.0.0
   state:
@@ -18,7 +18,7 @@
   license:
     identifier: BSD-2-Clause
     uri: http://www.horde.org/licenses/bsd
-  notes:
+  notes: ~
 2.0.6:
   api: 2.0.0
   state:
@@ -119,7 +119,7 @@
   license:
     identifier: BSD-2-Clause
     uri: http://www.horde.org/licenses/bsd
-  notes:
+  notes: ~
 1.0.3:
   api: 1.0.0
   state:
