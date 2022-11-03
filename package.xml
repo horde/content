@@ -16,7 +16,7 @@
   <email>chuck@horde.org</email>
   <active>no</active>
  </lead>
- <date>2021-03-13</date>
+ <date>2022-11-03</date>
  <version>
   <release>3.0.0alpha4</release>
   <api>3.0.0alpha1</api>
@@ -27,10 +27,18 @@
  </stability>
  <license uri="http://www.horde.org/licenses/bsd">BSD-2-Clause</license>
  <notes>
-* 
+* [rla] Enable PHP 8.x compat.
+* |+
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
+   <dir name=".github">
+    <dir name="workflows">
+     <file name="ci.yml" role="horde" />
+     <file name="phpdoc.yml" role="horde" />
+     <file name="update-satis.yml" role="horde" />
+    </dir> <!-- /.github/workflows -->
+   </dir> <!-- /.github -->
    <dir name="app">
     <dir name="controllers">
      <file name="ApplicationController.php" role="horde" />
@@ -132,9 +140,9 @@
  <dependencies>
   <required>
    <php>
-    <min>7.0.0</min>
-    <max>8.0.0alpha1</max>
-    <exclude>8.0.0alpha1</exclude>
+    <min>7.4.0</min>
+    <max>9.0.0alpha1</max>
+    <exclude>9.0.0alpha1</exclude>
    </php>
    <pearinstaller>
     <min>1.7.0</min>
@@ -154,6 +162,9 @@
  </usesrole>
  <phprelease>
   <filelist>
+   <install as="content/.github/workflows/ci.yml" name=".github/workflows/ci.yml" />
+   <install as="content/.github/workflows/phpdoc.yml" name=".github/workflows/phpdoc.yml" />
+   <install as="content/.github/workflows/update-satis.yml" name=".github/workflows/update-satis.yml" />
    <install as="content/.htaccess" name=".htaccess" />
    <install as="content/app/controllers/ApplicationController.php" name="app/controllers/ApplicationController.php" />
    <install as="content/app/controllers/TagController.php" name="app/controllers/TagController.php" />
@@ -203,27 +214,6 @@
   </filelist>
  </phprelease>
  <changelog>
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
   <release>
    <version>
     <release>1.0.0alpha1</release>
@@ -562,7 +552,8 @@
    <date>2021-03-13</date>
    <license uri="http://www.horde.org/licenses/bsd">BSD-2-Clause</license>
    <notes>
-* 
+* [rla] Enable PHP 8.x compat.
+* |+
    </notes>
   </release>
  </changelog>

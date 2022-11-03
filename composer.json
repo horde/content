@@ -1,5 +1,4 @@
 {
-    "minimum-stability": "dev",
     "name": "horde/content",
     "description": "Tagging application",
     "type": "horde-application",
@@ -17,15 +16,15 @@
             "role": "lead"
         }
     ],
-    "time": "2021-03-13",
+    "time": "2022-11-03",
     "repositories": [
         {
             "type": "composer",
-            "url": "https://horde-satis.maintaina.com/"
+            "url": "https://horde-satis.maintaina.com"
         }
     ],
     "require": {
-        "horde/horde-installer-plugin": "^2 || dev-FRAMEWORK_6_0",
+        "horde/horde-installer-plugin": "dev-FRAMEWORK_6_0 || ^2",
         "php": "^7.4 || ^8",
         "horde/core": "^3 || dev-FRAMEWORK_6_0",
         "horde/date": "^3 || dev-FRAMEWORK_6_0",
@@ -37,6 +36,7 @@
         "ext-gettext": "*",
         "ext-json": "*"
     },
+    "require-dev": {},
     "suggest": {
         "horde/argv": "^3 || dev-FRAMEWORK_6_0",
         "horde/controller": "^3 || dev-FRAMEWORK_6_0",
@@ -47,6 +47,11 @@
             "Content": "lib/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Horde\\Content\\Test\\": "test/"
+        }
+    },
     "bin": [
         "bin/content-object-add",
         "bin/content-object-delete",
@@ -54,5 +59,10 @@
         "bin/content-tag-add",
         "bin/content-tag-delete",
         "bin/content-untag"
-    ]
+    ],
+    "config": {
+        "allow-plugins": {
+            "horde/horde-installer-plugin": true
+        }
+    }
 }
