@@ -15,7 +15,7 @@ require_once __DIR__ . '/Base.php';
  */
 class Content_Sql_MysqlTest extends Content_Test_Sql_Base
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         if (!extension_loaded('mysql')) {
             self::$reason = 'No mysql extension';
