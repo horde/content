@@ -19,31 +19,25 @@
     "version": "2.0.7",
     "time": "2017-11-14",
     "repositories": [
-        {
-            "type": "pear",
-            "url": "https://pear.horde.org"
-        }
     ],
     "require": {
         "php": "^5.3 || ^7",
-        "pear-pear.horde.org/Horde_Core": "^2",
-        "pear-pear.horde.org/Horde_Date": "^2",
-        "pear-pear.horde.org/Horde_Exception": "^2",
-        "pear-pear.horde.org/Horde_Db": "^2",
-        "pear-pear.horde.org/Horde_Injector": "^2",
-        "pear-pear.horde.org/Horde_Rdo": "^2",
-        "pear-pear.horde.org/Horde_Util": "^2",
+        "horde/core": "^2",
+        "horde/date": "^2",
+        "horde/exception": "^2",
+        "horde/db": "^2",
+        "horde/injector": "^2",
+        "horde/rdo": "^2",
+        "horde/util": "^2",
         "ext-gettext": "*",
         "ext-json": "*"
     },
     "suggest": {
-        "pear-pear.horde.org/Horde_Argv": "^2",
-        "pear-pear.horde.org/Horde_Controller": "^2",
-        "pear-pear.horde.org/Horde_ElasticSearch": "^1"
+        "horde/argv": "^2",
+        "horde/controller": "^2",
+        "horde/elasticsearch": "^1"
     },
     "replace": {
-        "pear-pear.horde.org/content": "2.*",
-        "pear-horde/content": "2.*"
     },
     "autoload": {
         "psr-0": {
