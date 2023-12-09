@@ -15,7 +15,7 @@ require_once __DIR__ . '/../Base.php';
  */
 class Content_Sql_Pdo_SqliteTest extends Content_Test_Sql_Base
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         $factory_db = new Horde_Test_Factory_Db();
 
