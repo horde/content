@@ -31,13 +31,13 @@ class Content_Test_Sql_Base extends Content_Test_Base
         $this->assertEquals(4, count($objects));
         // If these aren't strings, then ids were taken as names.
         foreach ($objects as $object) {
-            $this->assertInternalType('string', $object['object_name']);
+            $this->assertIsString($object['object_name']);
         }
 
         $types = self::$db->select('SELECT * FROM rampage_types');
         $this->assertEquals(2, count($types));
         foreach ($types as $type) {
-            $this->assertInternalType('string', $type['type_name']);
+            $this->assertIsString($type['type_name']);
         }
     }
 
@@ -175,7 +175,7 @@ class Content_Test_Sql_Base extends Content_Test_Base
         $this->_testUntag();
     }
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$injector = new Horde_Injector(new Horde_Injector_TopLevel());
         self::$injector->setInstance('Horde_Db_Adapter', self::$db);
@@ -192,7 +192,7 @@ class Content_Test_Sql_Base extends Content_Test_Base
         self::$type_mgr = self::$injector->createInstance('Content_Types_Manager');
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         if (self::$migrator) {
             self::$migrator->down();
@@ -201,7 +201,7 @@ class Content_Test_Sql_Base extends Content_Test_Base
         parent::tearDownAfterClass();
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!self::$db) {
             $this->markTestSkipped(self::$reason);
