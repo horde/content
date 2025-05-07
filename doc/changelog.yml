@@ -1,16 +1,16 @@
 ---
-3.0.0alpha5:
-  api: 3.0.0alpha1
+3.0.0-alpha5:
+  api: 3.0.0-alpha1
   state:
-    release: alpha
-    api: alpha
-  date: 2022-11-03
+    release: true
+    api: true
+  date: 2025-05-07
   license:
     identifier: BSD-2-Clause
     uri: http://www.horde.org/licenses/bsd
-  notes: |+
-    
-3.0.0alpha4:
+  notes: |
+    fix: Implicit nullable
+3.0.0-alpha4:
   api: 3.0.0alpha1
   state:
     release: alpha
@@ -20,9 +20,10 @@
     identifier: BSD-2-Clause
     uri: http://www.horde.org/licenses/bsd
   notes: |
+    Original version string was 3.0.0alpha4
     [rla] Enable PHP 8.x compat.
     |+
-3.0.0alpha3:
+3.0.0-alpha3:
   api: 3.0.0alpha1
   state:
     release: alpha
@@ -31,8 +32,10 @@
   license:
     identifier: BSD-2-Clause
     uri: http://www.horde.org/licenses/bsd
-  notes: |+
-3.0.0alpha2:
+  notes: |-
+    Original version string was 3.0.0alpha3
+    |+
+3.0.0-alpha2:
   api: 3.0.0alpha1
   state:
     release: alpha
@@ -41,8 +44,10 @@
   license:
     identifier: BSD-2-Clause
     uri: http://www.horde.org/licenses/bsd
-  notes: |+
-3.0.0alpha1:
+  notes: |-
+    Original version string was 3.0.0alpha2
+    |+
+3.0.0-alpha1:
   api: 3.0.0alpha1
   state:
     release: beta
@@ -51,7 +56,8 @@
   license:
     identifier: BSD-2-Clause
     uri: http://www.horde.org/licenses/bsd
-  notes: ~
+  notes: |
+    Original version string was 3.0.0alpha1
 2.0.7:
   api: 2.0.0
   state:
@@ -131,6 +137,18 @@
   notes: |
     [jan] Add missing optional dependency on Horde_ElasticSearch.
     [jan] Catch exceptions from Horde_ElasticSearch.
+2.0.0-beta1:
+  api: 2.0.0beta1
+  state:
+    release: beta
+    api: beta
+  date: 2012-08-29
+  license:
+    identifier: BSD-2-Clause
+    uri: http://www.horde.org/licenses/bsd
+  notes: |
+    Original version string was 2.0.0beta1
+    First beta release for Horde 5.
 2.0.0:
   api: 2.0.0
   state:
@@ -142,17 +160,6 @@
     uri: http://www.horde.org/licenses/bsd
   notes: |
     First stable release for Horde 5.
-2.0.0beta1:
-  api: 2.0.0beta1
-  state:
-    release: beta
-    api: beta
-  date: 2012-08-29
-  license:
-    identifier: BSD-2-Clause
-    uri: http://www.horde.org/licenses/bsd
-  notes: |
-    First beta release for Horde 5.
 1.0.4:
   api: 1.0.0
   state:
@@ -202,6 +209,55 @@
     [mjr] Enforce that object and type names are always taken as a string (Bug #10171).
     [mjr] Updated unit tests to new test structure.
     [mjr] Prevent tagging with empty tags.
+1.0.0-beta1:
+  api: 1.0.0
+  state:
+    release: beta
+    api: beta
+  date: 2011-03-16
+  license:
+    identifier: BSD-2-Clause
+    uri: http://www.horde.org/licenses/bsd
+  notes: |
+    Original version string was 1.0.0beta1
+    First beta release for Horde 4.
+1.0.0-alpha1:
+  api: 1.0.0
+  state:
+    release: alpha
+    api: alpha
+  date: 2011-03-09
+  license:
+    identifier: BSD-2-Clause
+    uri: http://www.horde.org/licenses/bsd
+  notes: |
+    Original version string was 1.0.0alpha1
+    First alpha release for Horde 4.
+1.0.0-RC2:
+  api: 1.0.0
+  state:
+    release: beta
+    api: beta
+  date: 2011-03-30
+  license:
+    identifier: BSD-2-Clause
+    uri: http://www.horde.org/licenses/bsd
+  notes: |
+    Original version string was 1.0.0RC2
+    Second release candidate for Horde 4.
+    [jan] Rename all scripts to be prefixed with content- (Request #9647).
+1.0.0-RC1:
+  api: 1.0.0
+  state:
+    release: beta
+    api: beta
+  date: 2011-03-23
+  license:
+    identifier: BSD-2-Clause
+    uri: http://www.horde.org/licenses/bsd
+  notes: |
+    Original version string was 1.0.0RC1
+    First release candidate for Horde 4.
 1.0.0:
   api: 1.0.0
   state:
@@ -214,48 +270,3 @@
   notes: |
     First stable release for Horde 4.
     [jan] Fix case-insensitive filtering of duplicate tags (Bug #9617).
-1.0.0RC2:
-  api: 1.0.0
-  state:
-    release: beta
-    api: beta
-  date: 2011-03-30
-  license:
-    identifier: BSD-2-Clause
-    uri: http://www.horde.org/licenses/bsd
-  notes: |
-    Second release candidate for Horde 4.
-    [jan] Rename all scripts to be prefixed with content- (Request #9647).
-1.0.0RC1:
-  api: 1.0.0
-  state:
-    release: beta
-    api: beta
-  date: 2011-03-23
-  license:
-    identifier: BSD-2-Clause
-    uri: http://www.horde.org/licenses/bsd
-  notes: |
-    First release candidate for Horde 4.
-1.0.0beta1:
-  api: 1.0.0
-  state:
-    release: beta
-    api: beta
-  date: 2011-03-16
-  license:
-    identifier: BSD-2-Clause
-    uri: http://www.horde.org/licenses/bsd
-  notes: |
-    First beta release for Horde 4.
-1.0.0alpha1:
-  api: 1.0.0
-  state:
-    release: alpha
-    api: alpha
-  date: 2011-03-09
-  license:
-    identifier: BSD-2-Clause
-    uri: http://www.horde.org/licenses/bsd
-  notes: |
-    First alpha release for Horde 4.

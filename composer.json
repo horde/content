@@ -1,5 +1,4 @@
 {
-    "minimum-stability": "dev",
     "name": "horde/content",
     "description": "Tagging application",
     "type": "horde-application",
@@ -17,31 +16,26 @@
             "role": "lead"
         }
     ],
-    "time": "2022-11-03",
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://horde-satis.maintaina.com"
-        }
-    ],
+    "time": "2025-05-07",
+    "repositories": [],
     "require": {
-        "horde/horde-installer-plugin": "dev-FRAMEWORK_6_0 || ^2",
+        "horde/horde-installer-plugin": "FRAMEWORK_6_0 || ^2",
         "php": "^7.4 || ^8",
-        "horde/core": "^3 || dev-FRAMEWORK_6_0",
-        "horde/date": "^3 || dev-FRAMEWORK_6_0",
-        "horde/exception": "^3 || dev-FRAMEWORK_6_0",
-        "horde/db": "^3 || dev-FRAMEWORK_6_0",
-        "horde/injector": "^3 || dev-FRAMEWORK_6_0",
-        "horde/rdo": "^3 || dev-FRAMEWORK_6_0",
-        "horde/util": "^3 || dev-FRAMEWORK_6_0",
+        "horde/core": "^3 || FRAMEWORK_6_0",
+        "horde/date": "^3 || FRAMEWORK_6_0",
+        "horde/exception": "^3 || FRAMEWORK_6_0",
+        "horde/db": "^3 || FRAMEWORK_6_0",
+        "horde/injector": "^3 || FRAMEWORK_6_0",
+        "horde/rdo": "^3 || FRAMEWORK_6_0",
+        "horde/util": "^3 || FRAMEWORK_6_0",
         "ext-gettext": "*",
         "ext-json": "*"
     },
     "require-dev": {},
     "suggest": {
-        "horde/argv": "^3 || dev-FRAMEWORK_6_0",
-        "horde/controller": "^3 || dev-FRAMEWORK_6_0",
-        "horde/elasticsearch": "^2 || dev-FRAMEWORK_6_0"
+        "horde/argv": "^3 || FRAMEWORK_6_0",
+        "horde/controller": "^3 || FRAMEWORK_6_0",
+        "horde/elasticsearch": "^2 || FRAMEWORK_6_0"
     },
     "autoload": {
         "psr-0": {
