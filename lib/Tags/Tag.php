@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2008-2017 Horde LLC (http://www.horde.org/)
  *
@@ -7,6 +8,4 @@
  * @category Horde
  * @package  Horde_Content
  */
-class Content_Tag extends Horde_Rdo_Base
-{
-}
+class Content_Tag extends Horde_Rdo_Base {}

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2008-2017 Horde LLC (http://www.horde.org/)
  *
@@ -31,9 +32,9 @@ class Content_Objects_Manager
      * @TODO: this should probably be populated by the responsible manager...
      * @var array
      */
-    protected $_tables = array(
+    protected $_tables = [
         'objects' => 'rampage_objects',
-    );
+    ];
 
     /**
      * Type manager
@@ -74,10 +75,10 @@ class Content_Objects_Manager
     {
         $type = current($this->_typeManager->ensureTypes($type));
         if (!is_array($objects)) {
-            $objects = array($objects);
+            $objects = [$objects];
         }
         if (!count($objects)) {
-            return array();
+            return [];
         }
         // Ensure we take the object as a string indentifier.
         foreach ($objects as &$object) {
@@ -91,7 +92,9 @@ class Content_Objects_Manager
                 'SELECT object_id, object_name FROM ' . $this->_t('objects')
                     . ' WHERE object_name IN ('
                     . str_repeat('?,', count($objects) - 1) . '?)'
-                    . ' AND type_id = ?', $params);
+                    . ' AND type_id = ?',
+                $params
+            );
             if ($ids) {
                 return $ids;
             }
@@ -152,11 +155,11 @@ class Content_Objects_Manager
     public function ensureObjects($objects, $type)
     {
         if (!is_array($objects)) {
-            $objects = array($objects);
+            $objects = [$objects];
         }
 
-        $objectIds = array();
-        $objectName = array();
+        $objectIds = [];
+        $objectName = [];
 
         $type = current($this->_typeManager->ensureTypes($type));
 
@@ -175,8 +178,9 @@ class Content_Objects_Manager
                 $rows = $this->_db->select(
                     'SELECT object_id, object_name FROM ' . $this->_t('objects')
                          . ' WHERE object_name IN ('
-                         . implode(',', array_map(array($this->_db, 'quoteString'), array_keys($objectName)))
-                         . ') AND type_id = ' . $type);
+                         . implode(',', array_map([$this->_db, 'quoteString'], array_keys($objectName)))
+                         . ') AND type_id = ' . $type
+                );
                 foreach ($rows as $row) {
                     $objectIndex = $objectName[$row['object_name']];
                     unset($objectName[$row['object_name']]);

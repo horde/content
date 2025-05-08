@@ -1,6 +1,6 @@
 <?php
 
- require_once __DIR__ . '/../Base.php';
+require_once __DIR__ . '/../Base.php';
 
 /**
  *
@@ -10,19 +10,19 @@ class Content_Test_Sql_Base extends Content_Test_Base
     /**
      * @static Horde_Db_Adapter_Base
      */
-    static $db;
+    public static $db;
 
     /**
      * @static Horde_Injector
      */
-    static $injector;
+    public static $injector;
 
     /**
      * @static Horde_Db_Migration_Migrator
      */
-    static $migrator;
+    public static $migrator;
 
-    static $reason;
+    public static $reason;
 
     public function testCreate()
     {
@@ -73,34 +73,34 @@ class Content_Test_Sql_Base extends Content_Test_Base
     /**
      * @depends testCreate
      */
-     public function testTagCloudByUser()
-     {
-         $this->_testTagCloudByUser();
-     }
+    public function testTagCloudByUser()
+    {
+        $this->_testTagCloudByUser();
+    }
 
-     /**
-      * @depends testCreate
-      */
-     public function testTagCloudByUserType()
-     {
-         $this->_testTagCloudByUserType();
-     }
+    /**
+     * @depends testCreate
+     */
+    public function testTagCloudByUserType()
+    {
+        $this->_testTagCloudByUserType();
+    }
 
-     /**
-      * @depends testCreate
-      */
-     public function testTagCloudByTagType()
-     {
-         $this->_testTagCloudByTagType();
-     }
+    /**
+     * @depends testCreate
+     */
+    public function testTagCloudByTagType()
+    {
+        $this->_testTagCloudByTagType();
+    }
 
-     /**
-      * @depends testCreate
-      */
-     public function testTagCloudByTagIds()
-     {
-         $this->_testTagCloudByTagIds();
-     }
+    /**
+     * @depends testCreate
+     */
+    public function testTagCloudByTagIds()
+    {
+        $this->_testTagCloudByTagIds();
+    }
 
     /**
      * @depends testCreate
@@ -184,8 +184,9 @@ class Content_Test_Sql_Base extends Content_Test_Base
         self::$migrator = new Horde_Db_Migration_Migrator(
             self::$db,
             null, //$logger,
-            array('migrationsPath' => __DIR__ . '/../../../migration',
-                  'schemaTableName' => 'content_test_schema'));
+            ['migrationsPath' => __DIR__ . '/../../../migration',
+                'schemaTableName' => 'content_test_schema']
+        );
 
         self::$migrator->up();
         self::$tagger = self::$injector->getInstance('Content_Tagger');

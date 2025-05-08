@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2008-2017 Horde LLC (http://www.horde.org/)
  *
@@ -20,9 +21,9 @@ class Content_Types_Manager
      * Tables
      * @var array
      */
-    protected $_tables = array(
+    protected $_tables = [
         'types' => 'rampage_types',
-    );
+    ];
 
     public function __construct(Horde_Db_Adapter $db)
     {
@@ -42,11 +43,11 @@ class Content_Types_Manager
     public function ensureTypes($types)
     {
         if (!is_array($types)) {
-            $types = array($types);
+            $types = [$types];
         }
 
-        $typeIds = array();
-        $typeName = array();
+        $typeIds = [];
+        $typeName = [];
 
         // Anything already typed as an integer is assumed to be a type id.
         foreach ($types as $typeIndex => $type) {
@@ -62,12 +63,12 @@ class Content_Types_Manager
             if (count($typeName)) {
                 $rows = $this->_db->selectAssoc('SELECT type_id, type_name FROM '
                     . $this->_t('types') . ' WHERE type_name IN ('
-                    . implode(',', array_map(array($this->_db, 'quoteString'), array_keys($typeName)))
+                    . implode(',', array_map([$this->_db, 'quoteString'], array_keys($typeName)))
                     . ')');
                 foreach ($rows as $id => $type) {
                     $typeIndex = $typeName[$type];
                     unset($typeName[$type]);
-                    $typeIds[$typeIndex] = (int)$id;
+                    $typeIds[$typeIndex] = (int) $id;
                 }
             }
 
@@ -76,7 +77,8 @@ class Content_Types_Manager
                 $typeIds[$typeIndex] = intval($this->_db->insert(
                     'INSERT INTO ' . $this->_t('types')
                         . ' (type_name) VALUES ('
-                        . $this->_db->quoteString($type) . ')'));
+                        . $this->_db->quoteString($type) . ')'
+                ));
             }
         } catch (Horde_Db_Exception $e) {
             throw new Content_Exception($e);
