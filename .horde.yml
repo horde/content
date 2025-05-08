@@ -46,3 +46,8 @@ dependencies:
       horde/argv: ^3
       horde/controller: ^3
       horde/elasticsearch: ^2
+  dev:
+    composer:
+      phpunit/phpunit: ^12
+      friendsofphp/php-cs-fixer: ^3
+      phpstan/phpstan: ^2

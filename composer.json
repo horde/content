@@ -16,26 +16,30 @@
             "role": "lead"
         }
     ],
-    "time": "2025-05-07",
+    "time": "2025-05-08",
     "repositories": [],
     "require": {
-        "horde/horde-installer-plugin": "FRAMEWORK_6_0 || ^2",
+        "horde/horde-installer-plugin": "dev-FRAMEWORK_6_0 || ^2",
         "php": "^7.4 || ^8",
-        "horde/core": "^3 || FRAMEWORK_6_0",
-        "horde/date": "^3 || FRAMEWORK_6_0",
-        "horde/exception": "^3 || FRAMEWORK_6_0",
-        "horde/db": "^3 || FRAMEWORK_6_0",
-        "horde/injector": "^3 || FRAMEWORK_6_0",
-        "horde/rdo": "^3 || FRAMEWORK_6_0",
-        "horde/util": "^3 || FRAMEWORK_6_0",
+        "horde/core": "^3 || dev-FRAMEWORK_6_0",
+        "horde/date": "^3 || dev-FRAMEWORK_6_0",
+        "horde/exception": "^3 || dev-FRAMEWORK_6_0",
+        "horde/db": "^3 || dev-FRAMEWORK_6_0",
+        "horde/injector": "^3 || dev-FRAMEWORK_6_0",
+        "horde/rdo": "^3 || dev-FRAMEWORK_6_0",
+        "horde/util": "^3 || dev-FRAMEWORK_6_0",
         "ext-gettext": "*",
         "ext-json": "*"
     },
-    "require-dev": {},
+    "require-dev": {
+        "phpunit/phpunit": "^12",
+        "friendsofphp/php-cs-fixer": "^3",
+        "phpstan/phpstan": "^2"
+    },
     "suggest": {
-        "horde/argv": "^3 || FRAMEWORK_6_0",
-        "horde/controller": "^3 || FRAMEWORK_6_0",
-        "horde/elasticsearch": "^2 || FRAMEWORK_6_0"
+        "horde/argv": "^3 || dev-FRAMEWORK_6_0",
+        "horde/controller": "^3 || dev-FRAMEWORK_6_0",
+        "horde/elasticsearch": "^2 || dev-FRAMEWORK_6_0"
     },
     "autoload": {
         "psr-0": {
