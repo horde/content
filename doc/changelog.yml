@@ -1,4 +1,16 @@
 ---
+3.0.0-alpha6:
+  api: 3.0.0-alpha1
+  state:
+    release: true
+    api: true
+  date: 2025-05-08
+  license:
+    identifier: BSD-2-Clause
+    uri: http://www.horde.org/licenses/bsd
+  notes: |
+    style: Apply php-cs-fixer
+    fix: Add/Update tool chain
 3.0.0-alpha5:
   api: 3.0.0-alpha1
   state:
