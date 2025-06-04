@@ -1,4 +1,5 @@
 <?php
+
 $potentialDirs = ['/lib', '/src', '/test', '/tests'];
 
 $finder = (new PhpCsFixer\Finder());

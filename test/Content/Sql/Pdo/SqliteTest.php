@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Prepare the test setup.
  */
@@ -12,6 +13,7 @@ require_once __DIR__ . '/../Base.php';
  * @package    Content
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/bsd BSD
+ * @coversNothing
  */
 class Content_Sql_Pdo_SqliteTest extends Content_Test_Sql_Base
 {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2011-2017 Horde LLC (http://www.horde.org/)
  *
@@ -36,11 +37,12 @@ class Content_Indexer
     /**
      * Constructor
      */
-    public function __construct(Horde_ElasticSearch_Client $es,
-                                Content_Users_Manager $userManager,
-                                Content_Types_Manager $typeManager,
-                                Content_Objects_Manager $objectManager)
-    {
+    public function __construct(
+        Horde_ElasticSearch_Client $es,
+        Content_Users_Manager $userManager,
+        Content_Types_Manager $typeManager,
+        Content_Objects_Manager $objectManager
+    ) {
         $this->_es = $es;
         $this->_userManager = $userManager;
         $this->_typeManager = $typeManager;
@@ -74,9 +76,11 @@ class Content_Indexer
     {
         if (is_array($object)) {
             $object = current($this->_objectManager->ensureObjects(
-                $object['object'], (int)current($this->_typeManager->ensureTypes($object['type']))));
+                $object['object'],
+                (int) current($this->_typeManager->ensureTypes($object['type']))
+            ));
         }
 
-        return (int)$object;
+        return (int) $object;
     }
 }

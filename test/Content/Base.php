@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2008-2017 Horde LLC (http://www.horde.org/)
  *
@@ -13,8 +14,8 @@ class Content_Test_Base extends Horde_Test_Case
     /**
      * @static Content_Tagger
      */
-    static $tagger;
-    static $type_mgr;
+    public static $tagger;
+    public static $type_mgr;
 
     /**
      * Primes the fixture, and tests basic tagging functionality where all
@@ -28,23 +29,23 @@ class Content_Test_Base extends Horde_Test_Case
 
         // user alice tags an event named 'party' with the tag 'personal' and
         // an event named 'anniversary' with the tag 'personal'
-        self::$tagger->tag('alice', array('type' => 'event', 'object' => 'party'), 'play', new Horde_Date('2008-01-01T00:10:00'));
+        self::$tagger->tag('alice', ['type' => 'event', 'object' => 'party'], 'play', new Horde_Date('2008-01-01T00:10:00'));
 
         // user alice tags an event named 'office hours' with the tag 'work'
-        self::$tagger->tag('alice', array('type' => 'event', 'object' => 'office hours'), 'work', new Horde_Date('2008-01-01T00:05:00'));
+        self::$tagger->tag('alice', ['type' => 'event', 'object' => 'office hours'], 'work', new Horde_Date('2008-01-01T00:05:00'));
 
         // user bob tags a blog named 'daring fireball' with the tag 'apple'
-        self::$tagger->tag('bob', array('type' => 'blog', 'object' => 'daring fireball'), 'apple', new Horde_Date('2008-01-01T00:20:00'));
+        self::$tagger->tag('bob', ['type' => 'blog', 'object' => 'daring fireball'], 'apple', new Horde_Date('2008-01-01T00:20:00'));
 
         // Two users have tagged the same object, with the same tag
-        self::$tagger->tag('alice', array('type' => 'event', 'object' => 'anniversary'), 'personal', new Horde_Date('2009-01-01T00:05:00'));
-        self::$tagger->tag('bob', array('type' => 'event', 'object' => 'anniversary'), 'personal', new Horde_Date('2009-01-01T00:06:00'));
+        self::$tagger->tag('alice', ['type' => 'event', 'object' => 'anniversary'], 'personal', new Horde_Date('2009-01-01T00:05:00'));
+        self::$tagger->tag('bob', ['type' => 'event', 'object' => 'anniversary'], 'personal', new Horde_Date('2009-01-01T00:06:00'));
     }
 
     protected function _testEmpty()
     {
         // Basic check that no data exists.
-        $this->assertEmpty(self::$tagger->getTags(array()));
+        $this->assertEmpty(self::$tagger->getTags([]));
         $this->assertEmpty(self::$tagger->getRecentTags());
         $this->assertEmpty(self::$tagger->getRecentObjects());
     }
@@ -55,9 +56,9 @@ class Content_Test_Base extends Horde_Test_Case
      */
     protected function _testEnsureTypes()
     {
-        $this->assertEquals(array(0 => 1, 1 => 2), self::$type_mgr->ensureTypes(array('event', 'blog')));
-        $this->assertEquals(array(0 => 2, 1 => 1), self::$type_mgr->ensureTypes(array('blog', 'event')));
-        $this->assertEquals(array(0 => 3, 1 => 2), self::$type_mgr->ensureTypes(array('foo', 'blog')));
+        $this->assertEquals([0 => 1, 1 => 2], self::$type_mgr->ensureTypes(['event', 'blog']));
+        $this->assertEquals([0 => 2, 1 => 1], self::$type_mgr->ensureTypes(['blog', 'event']));
+        $this->assertEquals([0 => 3, 1 => 2], self::$type_mgr->ensureTypes(['foo', 'blog']));
     }
 
     /**
@@ -71,48 +72,48 @@ class Content_Test_Base extends Horde_Test_Case
     protected function _testEnsureTags()
     {
         // Test passing tag_ids to ensureTags
-        $this->assertEquals(array(1 => 1), self::$tagger->ensureTags(1));
-        $this->assertEquals(array(1 => 1), self::$tagger->ensureTags(array(1)));
-        $this->assertEquals(array(1 => 1, 2 => 2), self::$tagger->ensureTags(array(1, 2)));
+        $this->assertEquals([1 => 1], self::$tagger->ensureTags(1));
+        $this->assertEquals([1 => 1], self::$tagger->ensureTags([1]));
+        $this->assertEquals([1 => 1, 2 => 2], self::$tagger->ensureTags([1, 2]));
 
         // Test passing tag names
-        $this->assertEquals(array('work' => 2), self::$tagger->ensureTags('work'));
-        $this->assertEquals(array('work' => 2), self::$tagger->ensureTags(array('work')));
-        $this->assertEquals(array('work' => 2, 'play' => 1), self::$tagger->ensureTags(array('work', 'play')));
+        $this->assertEquals(['work' => 2], self::$tagger->ensureTags('work'));
+        $this->assertEquals(['work' => 2], self::$tagger->ensureTags(['work']));
+        $this->assertEquals(['work' => 2, 'play' => 1], self::$tagger->ensureTags(['work', 'play']));
 
         // Test mixed
-        $this->assertEquals(array(1 => 1, 'play' => 1), self::$tagger->ensureTags(array(1, 'play')));
-        $this->assertEquals(array(2 => 2, 'work' => 2), self::$tagger->ensureTags(array('work', 2)));
-        $this->assertEquals(array(1 => 1, 'work' => 2), self::$tagger->ensureTags(array(1, 'work')));
+        $this->assertEquals([1 => 1, 'play' => 1], self::$tagger->ensureTags([1, 'play']));
+        $this->assertEquals([2 => 2, 'work' => 2], self::$tagger->ensureTags(['work', 2]));
+        $this->assertEquals([1 => 1, 'work' => 2], self::$tagger->ensureTags([1, 'work']));
     }
 
     protected function _testFullTagCloudSimple()
     {
-        $expected = array(
-            '1' => array(
+        $expected = [
+            '1' => [
                 'tag_id' => 1,
                 'tag_name' => 'play',
-                'count' => 1
-            ),
+                'count' => 1,
+            ],
 
-            '2' => array(
+            '2' => [
                 'tag_id' => 2,
                 'tag_name' => 'work',
-                'count' => 1
-            ),
+                'count' => 1,
+            ],
 
-            '3' => array(
+            '3' => [
                 'tag_id' => 3,
                 'tag_name' => 'apple',
-                'count' => 1
-            ),
+                'count' => 1,
+            ],
 
-            '4' => array(
+            '4' => [
                 'tag_id' => 4,
                 'tag_name' => 'personal',
-                'count' => 2
-            )
-        );
+                'count' => 2,
+            ],
+        ];
 
         $cloud = self::$tagger->getTagCloud();
         $this->assertEquals($expected, $cloud);
@@ -120,86 +121,86 @@ class Content_Test_Base extends Horde_Test_Case
 
     protected function _testTagCloudByType()
     {
-        $expected = array(
-            '3' => array(
+        $expected = [
+            '3' => [
                 'tag_id' => 3,
                 'tag_name' => 'apple',
-                'count' => 1
-            )
-        );
-        $cloud = self::$tagger->getTagCloud(array('typeId' => 'blog'));
+                'count' => 1,
+            ],
+        ];
+        $cloud = self::$tagger->getTagCloud(['typeId' => 'blog']);
         $this->assertEquals($expected, $cloud);
     }
 
     protected function _testTagCloudByUser()
     {
-        $expected = array(
-            '3' => array(
+        $expected = [
+            '3' => [
                 'tag_id' => 3,
                 'tag_name' => 'apple',
-                'count' => 1
-            ),
-            '4' => array(
+                'count' => 1,
+            ],
+            '4' => [
                 'tag_id' => 4,
                 'tag_name' => 'personal',
-                'count' => 1
-            )
-        );
-        $cloud = self::$tagger->getTagCloud(array('userId' => 'bob'));
+                'count' => 1,
+            ],
+        ];
+        $cloud = self::$tagger->getTagCloud(['userId' => 'bob']);
         $this->assertEquals($expected, $cloud);
     }
 
     protected function _testTagCloudByUserType()
     {
-        $expected = array(
-            '1' => array(
+        $expected = [
+            '1' => [
                 'tag_id' => 1,
                 'tag_name' => 'play',
-                'count' => 1
-            ),
-            '2' => array(
+                'count' => 1,
+            ],
+            '2' => [
                 'tag_id' => 2,
                 'tag_name' => 'work',
-                'count' => 1
-            ),
-            '4' => array(
+                'count' => 1,
+            ],
+            '4' => [
                 'tag_id' => 4,
                 'tag_name' => 'personal',
-                'count' => 1
-            )
-        );
-        $cloud = self::$tagger->getTagCloud(array('userId' => 'alice', 'typeId' => 'event'));
+                'count' => 1,
+            ],
+        ];
+        $cloud = self::$tagger->getTagCloud(['userId' => 'alice', 'typeId' => 'event']);
         $this->assertEquals($expected, $cloud);
     }
 
     protected function _testTagCloudByTagType()
     {
-        $expected = array(
-            '2' => array(
+        $expected = [
+            '2' => [
                 'tag_id' => 2,
                 'tag_name' => 'work',
-                'count' => 1
-            )
-        );
-        $cloud = self::$tagger->getTagCloud(array('tagIds' => array(2), 'typeId' => 'event'));
+                'count' => 1,
+            ],
+        ];
+        $cloud = self::$tagger->getTagCloud(['tagIds' => [2], 'typeId' => 'event']);
         $this->assertEquals($expected, $cloud);
     }
 
     protected function _testTagCloudByTagIds()
     {
-        $expected = array(
-            '2' => array(
+        $expected = [
+            '2' => [
                 'tag_id' => 2,
                 'tag_name' => 'work',
-                'count' => 1
-            ),
-            '4' => array(
+                'count' => 1,
+            ],
+            '4' => [
                 'tag_id' => 4,
                 'tag_name' => 'personal',
-                'count' => 2
-            )
-        );
-        $cloud = self::$tagger->getTagCloud(array('tagIds' => array(2, 4)));
+                'count' => 2,
+            ],
+        ];
+        $cloud = self::$tagger->getTagCloud(['tagIds' => [2, 4]]);
         $this->assertEquals($expected, $cloud);
     }
 
@@ -215,19 +216,19 @@ class Content_Test_Base extends Horde_Test_Case
 
     protected function _testGetRecentTagsByUser()
     {
-        $recent = self::$tagger->getRecentTags(array('userId' => 1));
+        $recent = self::$tagger->getRecentTags(['userId' => 1]);
         $this->assertEquals(3, count($recent));
 
-        $recent = self::$tagger->getRecentTags(array('userId' => 2));
+        $recent = self::$tagger->getRecentTags(['userId' => 2]);
         $this->assertEquals(2, count($recent));
 
-        $recent = self::$tagger->getRecentTags(array('userId' => 'alice'));
+        $recent = self::$tagger->getRecentTags(['userId' => 'alice']);
         $this->assertEquals(3, count($recent));
     }
 
     protected function _testGetRecentTagsByType()
     {
-        $recent = self::$tagger->getRecentTags(array('typeId' => 'event'));
+        $recent = self::$tagger->getRecentTags(['typeId' => 'event']);
         $this->assertEquals(3, count($recent));
     }
 
@@ -242,12 +243,12 @@ class Content_Test_Base extends Horde_Test_Case
 
     protected function _testUntag()
     {
-        self::$tagger->untag('alice', array('type' => 'event', 'object' => 'party'), 'play');
+        self::$tagger->untag('alice', ['type' => 'event', 'object' => 'party'], 'play');
         $count = self::$tagger->getRecentTags();
         $this->assertEquals(3, count($count));
 
         //readd
-        self::$tagger->tag('alice', array('type' => 'event', 'object' => 'party'), 'play', new Horde_Date('2008-01-01T00:10:00'));
+        self::$tagger->tag('alice', ['type' => 'event', 'object' => 'party'], 'play', new Horde_Date('2008-01-01T00:10:00'));
         $count = self::$tagger->getRecentTags();
         $this->assertEquals(4, count($count));
     }
@@ -257,24 +258,24 @@ class Content_Test_Base extends Horde_Test_Case
     protected function _testGetRecentObjectsByUser()
     {
         // alice has 3 recent objects
-        $recent = self::$tagger->getRecentObjects(array('userId' => 'alice'));
+        $recent = self::$tagger->getRecentObjects(['userId' => 'alice']);
         $this->assertEquals(3, count($recent));
 
         // bob has 2
-        $recent = self::$tagger->getRecentObjects(array('userId' => 'bob'));
+        $recent = self::$tagger->getRecentObjects(['userId' => 'bob']);
         $this->assertEquals(2, count($recent));
 
         // just for kicks, test using the user id, not name.
-        $recent = self::$tagger->getRecentObjects(array('userId' => 1));
+        $recent = self::$tagger->getRecentObjects(['userId' => 1]);
         $this->assertEquals(3, count($recent));
     }
 
     protected function _testGetRecentObjectsByType()
     {
-        $recent = self::$tagger->getRecentObjects(array('typeId' => 1));
+        $recent = self::$tagger->getRecentObjects(['typeId' => 1]);
         $this->assertEquals(3, count($recent));
 
-        $recent = self::$tagger->getRecentObjects(array('typeId' => 2));
+        $recent = self::$tagger->getRecentObjects(['typeId' => 2]);
         $this->assertEquals(1, count($recent));
     }
 
@@ -286,10 +287,10 @@ class Content_Test_Base extends Horde_Test_Case
 
     protected function _testGetRecentUsersByType()
     {
-        $recent = self::$tagger->getRecentUsers(array('typeId' => 1));
+        $recent = self::$tagger->getRecentUsers(['typeId' => 1]);
         $this->assertEquals(2, count($recent));
 
-        $recent = self::$tagger->getRecentUsers(array('typeId' => 2));
+        $recent = self::$tagger->getRecentUsers(['typeId' => 2]);
         $this->assertEquals(1, count($recent));
     }
 
@@ -301,9 +302,9 @@ class Content_Test_Base extends Horde_Test_Case
      */
     public function testGetObjectsByObjectId()
     {
-        self::$tagger->tag('mike', array('type' => 'event', 'object' => 'irene'), 'hurricane', new Horde_Date('2011-08-28T00:01:00'));
-        self::$tagger->tag('mike', array('type' => 'event', 'object' => 'floyd'), 'hurricane', new Horde_Date('1999-09-07T00:02:00'));
-        $object = self::$tagger->getObjects(array('objectId' => array('type' => 'event', 'object' => 'irene')));
+        self::$tagger->tag('mike', ['type' => 'event', 'object' => 'irene'], 'hurricane', new Horde_Date('2011-08-28T00:01:00'));
+        self::$tagger->tag('mike', ['type' => 'event', 'object' => 'floyd'], 'hurricane', new Horde_Date('1999-09-07T00:02:00'));
+        $object = self::$tagger->getObjects(['objectId' => ['type' => 'event', 'object' => 'irene']]);
         $this->assertEquals('floyd', current($object));
     }
 
@@ -318,10 +319,10 @@ class Content_Test_Base extends Horde_Test_Case
         self::$tagger->tag('mike', 1, 'työ');
         */
         // Use older timestamps to avoid interfering with the later tests
-        self::$tagger->tag('mike', array('type' => 'foo', 'object' => 'xyz'), 'foo', new Horde_Date('2008-01-01T00:05:00'));
-        self::$tagger->tag('alice', array('type' => 'foo', 'object' => 'xyz'), 'FOO', new Horde_Date('2008-01-01T00:05:00'));
-        self::$tagger->tag('alice', array('type' => 'foo', 'object' => 'xyz'), array('test', 'TEST'), new Horde_Date('2008-01-01T00:05:00'));
-        $this->assertEquals(2, count(self::$tagger->getTags(array('objectId' => array('type' => 'foo', 'object' => 'xyz')))));
+        self::$tagger->tag('mike', ['type' => 'foo', 'object' => 'xyz'], 'foo', new Horde_Date('2008-01-01T00:05:00'));
+        self::$tagger->tag('alice', ['type' => 'foo', 'object' => 'xyz'], 'FOO', new Horde_Date('2008-01-01T00:05:00'));
+        self::$tagger->tag('alice', ['type' => 'foo', 'object' => 'xyz'], ['test', 'TEST'], new Horde_Date('2008-01-01T00:05:00'));
+        $this->assertEquals(2, count(self::$tagger->getTags(['objectId' => ['type' => 'foo', 'object' => 'xyz']])));
     }
 
     public function testGetRecentTagsLimit()
@@ -333,7 +334,7 @@ class Content_Test_Base extends Horde_Test_Case
             self::$tagger->tag(1, 1, "t$i", new Horde_Date(strtotime('now - ' . $i . ' minutes')));
         }
 
-        $recentLimit = self::$tagger->getRecentTags(array('limit' => 25));
+        $recentLimit = self::$tagger->getRecentTags(['limit' => 25]);
         $this->assertEquals(25, count($recentLimit));
         $this->assertEquals('t1', $recentLimit[0]['tag_name']);
     }
@@ -343,7 +344,7 @@ class Content_Test_Base extends Horde_Test_Case
      */
     public function testGetRecentTagsOffset()
     {
-        $recentOffset = self::$tagger->getRecentTags(array('limit' => 25, 'offset' => 25));
+        $recentOffset = self::$tagger->getRecentTags(['limit' => 25, 'offset' => 25]);
         $this->assertEquals(25, count($recentOffset));
         $this->assertEquals('t26', $recentOffset[0]['tag_name']);
     }
@@ -356,7 +357,7 @@ class Content_Test_Base extends Horde_Test_Case
             self::$tagger->tag(1, $i, 1, new Horde_Date(strtotime('now - ' . $i . ' minutes')));
         }
 
-        $recentLimit = self::$tagger->getRecentObjects(array('limit' => 25));
+        $recentLimit = self::$tagger->getRecentObjects(['limit' => 25]);
         $this->assertEquals(25, count($recentLimit));
         $this->assertEquals(1, $recentLimit[0]['object_id']);
     }
@@ -366,7 +367,7 @@ class Content_Test_Base extends Horde_Test_Case
      */
     public function testGetRecentObjectsOffset()
     {
-        $recentOffset = self::$tagger->getRecentObjects(array('limit' => 25, 'offset' => 25));
+        $recentOffset = self::$tagger->getRecentObjects(['limit' => 25, 'offset' => 25]);
         $this->assertEquals(25, count($recentOffset));
         $this->assertEquals(26, $recentOffset[0]['object_id']);
     }
@@ -379,7 +380,7 @@ class Content_Test_Base extends Horde_Test_Case
             self::$tagger->tag($i, 1, 1, new Horde_Date(strtotime('now - ' . $i . ' minutes')));
         }
 
-        $recentLimit = self::$tagger->getRecentUsers(array('limit' => 25));
+        $recentLimit = self::$tagger->getRecentUsers(['limit' => 25]);
         $this->assertEquals(25, count($recentLimit));
         $this->assertEquals(1, $recentLimit[0]['user_id']);
     }
@@ -389,7 +390,7 @@ class Content_Test_Base extends Horde_Test_Case
      */
     public function testGetRecentUsersOffset()
     {
-        $recentOffset = self::$tagger->getRecentUsers(array('limit' => 25, 'offset' => 25));
+        $recentOffset = self::$tagger->getRecentUsers(['limit' => 25, 'offset' => 25]);
         $this->assertEquals(25, count($recentOffset));
         $this->assertEquals(26, $recentOffset[0]['user_id']);
     }

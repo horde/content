@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Prepare the test setup.
  */
@@ -12,6 +13,7 @@ require_once __DIR__ . '/Base.php';
  * @package    Content
  * @subpackage UnitTests
  * @license    http://www.horde.org/licenses/lgpl21 LGPL 2.1
+ * @coversNothing
  */
 class Content_Sql_MysqlTest extends Content_Test_Sql_Base
 {
@@ -21,8 +23,10 @@ class Content_Sql_MysqlTest extends Content_Test_Sql_Base
             self::$reason = 'No mysql extension';
             return;
         }
-        $config = self::getConfig('CONTENT_SQL_MYSQL_TEST_CONFIG',
-                                  __DIR__ . '/..');
+        $config = self::getConfig(
+            'CONTENT_SQL_MYSQL_TEST_CONFIG',
+            __DIR__ . '/..'
+        );
         if ($config && !empty($config['content']['sql']['mysql'])) {
             self::$db = new Horde_Db_Adapter_Mysql($config['content']['sql']['mysql']);
             parent::setUpBeforeClass();

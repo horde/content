@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2008-2017 Horde LLC (http://www.horde.org/)
  *
@@ -20,9 +21,9 @@ class Content_Users_Manager
      * Tables
      * @var array
      */
-    protected $_tables = array(
+    protected $_tables = [
         'users' => 'rampage_users',
-    );
+    ];
 
     public function __construct(Horde_Db_Adapter $db)
     {
@@ -41,11 +42,11 @@ class Content_Users_Manager
     public function ensureUsers($users)
     {
         if (!is_array($users)) {
-            $users = array($users);
+            $users = [$users];
         }
 
-        $userIds = array();
-        $userName = array();
+        $userIds = [];
+        $userName = [];
 
         // Anything already typed as an integer is assumed to be a user id.
         foreach ($users as $userIndex => $user) {
@@ -61,7 +62,7 @@ class Content_Users_Manager
             if (count($userName)) {
                 $userName;
                 $sql = 'SELECT user_id, user_name FROM ' . $this->_t('users')
-                    . ' WHERE user_name IN (' . implode(',', array_map(array($this, 'toDriver'), array_keys($userName))) . ')';
+                    . ' WHERE user_name IN (' . implode(',', array_map([$this, 'toDriver'], array_keys($userName))) . ')';
 
                 foreach ($this->_db->select($sql) as $row) {
                     $userIndex = $userName[$row['user_name']];
