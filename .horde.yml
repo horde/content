@@ -46,12 +46,14 @@ dependencies:
       horde/argv: ^3
       horde/controller: ^3
       horde/elasticsearch: ^2
-  classmap:
-    - lib/
-  psr-4:
-    Horde\Content\: /src
   dev:
     composer:
       phpunit/phpunit: ^12
       friendsofphp/php-cs-fixer: ^3
       phpstan/phpstan: ^2
+autoload:
+ classmap:
+    - lib/
+  psr-4:
+    Horde\Content\: /src
+ 
