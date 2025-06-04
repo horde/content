@@ -410,6 +410,7 @@ class Content_Tagger
      */
     public function getObjects($args)
     {
+	$sql = '';
         if (isset($args['objectId'])) {
             if (is_array($args['objectId'])) {
                 $args['objectId'] = current($this->_objectManager->ensureObjects(
@@ -601,6 +602,7 @@ class Content_Tagger
      */
     public function getUsers($args)
     {
+	$sql = '';
         if (isset($args['objectId'])) {
             $args['objectId'] = $this->_ensureObject($args['objectId']);
             $sql = 'SELECT t.user_id, user_name FROM ' . $this->_t('tagged') . ' t INNER JOIN ' . $this->_t('users') . ' u ON t.user_id = u.user_id WHERE object_id = ' . (int) $args['objectId'];
