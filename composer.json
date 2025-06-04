@@ -42,9 +42,9 @@
         "horde/elasticsearch": "^2 || dev-FRAMEWORK_6_0"
     },
     "autoload": {
-        "psr-0": {
-            "Content": "lib/"
-        }
+        "classmap": [
+            "lib/"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
