@@ -109,6 +109,9 @@ class Content_Tagger
 
         // Validate/ensure the parameters
         $userId = current($this->_userManager->ensureUsers($userId));
+        if ($userId === false) {
+            throw new Content_Exception('Failed to ensure user.');
+        }
 
         foreach ($this->ensureTags($tags) as $tagId) {
             if (!$this->_db->selectValue('SELECT 1 from ' . $this->_t('tagged') . ' WHERE user_id = ? AND object_id = ? AND tag_id = ?', [(int) $userId, (int) $objectId, (int) $tagId])) {
@@ -145,6 +148,9 @@ class Content_Tagger
     {
         // Ensure parameters
         $userId = current($this->_userManager->ensureUsers($userId));
+        if ($userId === false) {
+            throw new Content_Exception('Failed to ensure user.');
+        }
         $objectId = $this->_ensureObject($objectId);
 
         foreach ($this->ensureTags($tags) as $tagId) {
@@ -181,8 +187,10 @@ class Content_Tagger
             // Delete the tags
             if ($this->_db->delete('DELETE FROM ' . $this->_t('tagged') . ' WHERE object_id = ? AND tag_id = ?', [$objectId, $tagId])) {
                 // Update the stats
-                $this->_db->update('UPDATE ' . $this->_t('tag_stats') . ' SET count = count - ' . count($users) . ' WHERE tag_id = ?', [$tagId]);
-                $this->_db->update('UPDATE ' . $this->_t('user_tag_stats') . ' SET count = count - 1 WHERE user_id IN(' . str_repeat('?, ', count($users) - 1) . '?) AND tag_id = ?', array_merge($users, [$tagId]));
+                if (count($users)) {
+                    $this->_db->update('UPDATE ' . $this->_t('tag_stats') . ' SET count = count - ' . count($users) . ' WHERE tag_id = ?', [$tagId]);
+                    $this->_db->update('UPDATE ' . $this->_t('user_tag_stats') . ' SET count = count - 1 WHERE user_id IN(' . str_repeat('?, ', count($users) - 1) . '?) AND tag_id = ?', array_merge($users, [$tagId]));
+                }
 
                 // Housekeeping
                 $this->_db->delete('DELETE FROM ' . $this->_t('tag_stats') . ' WHERE count = 0');
@@ -246,6 +254,7 @@ class Content_Tagger
      */
     public function getTags($args)
     {
+        $haveWhere = false;
         if (isset($args['objectId'])) {
             // Don't create the object just because we're trying to load an
             // objects's tags - just check if the object is there. Assume if we
@@ -263,21 +272,33 @@ class Content_Tagger
             $sql = 'SELECT DISTINCT t.tag_id AS tag_id, tag_name FROM ' . $this->_t('tags') . ' t INNER JOIN ' . $this->_t('tagged') . ' tagged ON t.tag_id = tagged.tag_id AND tagged.object_id = ' . (int) $args['objectId'];
         } elseif (isset($args['userId']) && isset($args['typeId'])) {
             $args['userId'] = current($this->_userManager->ensureUsers($args['userId']));
+            if ($args['userId'] === false) {
+                throw new Content_Exception('Failed to ensure user.');
+            }
             $args['typeId'] = current($this->_typeManager->ensureTypes($args['typeId']));
+            if ($args['typeId'] === false) {
+                throw new Content_Exception('Failed to ensure type.');
+            }
             $sql = 'SELECT DISTINCT t.tag_id AS tag_id, tag_name FROM ' . $this->_t('tags') . ' t INNER JOIN ' . $this->_t('tagged') . ' tagged ON t.tag_id = tagged.tag_id AND tagged.user_id = ' . (int) $args['userId'] . ' INNER JOIN ' . $this->_t('objects') . ' objects ON tagged.object_id = objects.object_id AND objects.type_id = ' . (int) $args['typeId'];
         } elseif (isset($args['userId'])) {
             $args['userId'] = current($this->_userManager->ensureUsers($args['userId']));
+            if ($args['userId'] === false) {
+                throw new Content_Exception('Failed to ensure user.');
+            }
             $sql = 'SELECT DISTINCT t.tag_id AS tag_id, tag_name FROM ' . $this->_t('tagged') . ' tagged INNER JOIN ' . $this->_t('tags') . ' t ON tagged.tag_id = t.tag_id WHERE tagged.user_id = ' . (int) $args['userId'];
             $haveWhere = true;
         } elseif (isset($args['typeId'])) {
             $args['typeId'] = current($this->_typeManager->ensureTypes($args['typeId']));
+            if ($args['typeId'] === false) {
+                throw new Content_Exception('Failed to ensure type.');
+            }
             $sql = 'SELECT DISTINCT t.tag_id AS tag_id, tag_name FROM ' . $this->_t('tagged') . ' tagged INNER JOIN ' . $this->_t('objects') . ' objects ON tagged.object_id = objects.object_id AND objects.type_id = ' . (int) $args['typeId'] . ' INNER JOIN ' . $this->_t('tags') . ' t ON tagged.tag_id = t.tag_id';
         } elseif (isset($args['tagId'])) {
             $radius = isset($args['limit']) ? (int) $args['limit'] : $this->_defaultRadius;
             unset($args['limit']);
 
             $inner = $this->_db->addLimitOffset('SELECT object_id FROM ' . $this->_t('tagged') . ' WHERE tag_id = ' . (int) $args['tagId'], ['limit' => $radius]);
-            $sql = $this->_db->addLimitOffset('SELECT DISTINCT tagged2.tag_id AS tag_id, tag_name FROM (' . $inner . ') tagged1 INNER JOIN ' . $this->_t('tagged') . ' tagged2 ON tagged1.object_id = tagged2.object_id INNER JOIN ' . $this->_t('tags') . ' t ON tagged2.tag_id = t.tag_id', ['limit' => $args['limit']]);
+            $sql = $this->_db->addLimitOffset('SELECT DISTINCT tagged2.tag_id AS tag_id, tag_name FROM (' . $inner . ') tagged1 INNER JOIN ' . $this->_t('tagged') . ' tagged2 ON tagged1.object_id = tagged2.object_id INNER JOIN ' . $this->_t('tags') . ' t ON tagged2.tag_id = t.tag_id', ['limit' => $radius]);
         } else {
             $sql = 'SELECT DISTINCT t.tag_id, tag_name FROM ' . $this->_t('tags') . ' t JOIN ' . $this->_t('tagged') . ' tagged ON t.tag_id = tagged.tag_id';
         }
@@ -325,11 +346,17 @@ class Content_Tagger
             $sql = 'SELECT t.tag_id AS tag_id, tag_name, COUNT(*) AS count FROM ' . $this->_t('tagged') . ' tagged INNER JOIN ' . $this->_t('tags') . ' t ON tagged.tag_id = t.tag_id WHERE tagged.object_id IN (' . implode(',', $args['objectId']) . ') GROUP BY t.tag_id, t.tag_name';
         } elseif (isset($args['userId']) && isset($args['typeId'])) {
             $args['userId'] = current($this->_userManager->ensureUsers($args['userId']));
+            if ($args['userId'] === false) {
+                throw new Content_Exception('Failed to ensure user.');
+            }
             $args['typeId'] = $this->_typeManager->ensureTypes($args['typeId']);
             // This doesn't use a stat table, so may be slow.
             $sql = 'SELECT t.tag_id AS tag_id, tag_name, COUNT(*) AS count FROM ' . $this->_t('tagged') . ' tagged INNER JOIN ' . $this->_t('objects') . ' objects ON tagged.object_id = objects.object_id AND objects.type_id IN (' . implode(',', $args['typeId']) . ') INNER JOIN ' . $this->_t('tags') . ' t ON tagged.tag_id = t.tag_id WHERE tagged.user_id = ' . (int) $args['userId'] . ' GROUP BY t.tag_id, t.tag_name';
         } elseif (isset($args['userId'])) {
             $args['userId'] = current($this->_userManager->ensureUsers($args['userId']));
+            if ($args['userId'] === false) {
+                throw new Content_Exception('Failed to ensure user.');
+            }
             $sql = 'SELECT t.tag_id AS tag_id, tag_name, count FROM ' . $this->_t('tagged') . ' tagged INNER JOIN ' . $this->_t('tags') . ' t ON tagged.tag_id = t.tag_id INNER JOIN ' . $this->_t('user_tag_stats') . ' uts ON t.tag_id = uts.tag_id AND uts.user_id = ' . (int) $args['userId'] . ' GROUP BY t.tag_id, tag_name, count';
         } elseif (isset($args['tagIds']) && isset($args['typeId'])) {
             $args['typeId'] = $this->_typeManager->ensureTypes($args['typeId']);
@@ -378,10 +405,16 @@ class Content_Tagger
         $sql = 'SELECT tagged.tag_id AS tag_id, tag_name, MAX(created) AS created FROM ' . $this->_t('tagged') . ' tagged INNER JOIN ' . $this->_t('tags') . ' t ON tagged.tag_id = t.tag_id';
         if (isset($args['typeId'])) {
             $args['typeId'] = current($this->_typeManager->ensureTypes($args['typeId']));
+            if ($args['typeId'] === false) {
+                throw new Content_Exception('Failed to ensure type.');
+            }
             $sql .= ' INNER JOIN ' . $this->_t('objects') . ' objects ON tagged.object_id = objects.object_id AND objects.type_id = ' . (int) $args['typeId'];
         }
         if (isset($args['userId'])) {
             $args['userId'] = current($this->_userManager->ensureUsers($args['userId']));
+            if ($args['userId'] === false) {
+                throw new Content_Exception('Failed to ensure user.');
+            }
             $sql .= ' WHERE tagged.user_id = ' . (int) $args['userId'];
         }
         $sql .= ' GROUP BY tagged.tag_id, tag_name ORDER BY created DESC';
@@ -417,6 +450,9 @@ class Content_Tagger
                     $args['objectId']['object'],
                     $args['objectId']['type']
                 ));
+                if ($args['objectId'] === false) {
+                    throw new Content_Exception('Failed to ensure object.');
+                }
             }
 
             $radius = isset($args['radius'])
@@ -433,7 +469,7 @@ class Content_Tagger
                     . ' objects ON objects.object_id = t2.object_id WHERE t2.object_id != '
                     . (int) $args['objectId'] . ' GROUP BY t2.object_id, object_name';
             if (!empty($args['limit'])) {
-                $sql = $this->_db->addLimitOffset($sql, $args['limit']);
+                $sql = $this->_db->addLimitOffset($sql, ['limit' => $args['limit'], 'offset' => $args['offset'] ?? 0]);
             }
         } elseif (isset($args['tagId'])) {
             $tags = is_array($args['tagId']) ? array_values($args['tagId']) : [$args['tagId']];
@@ -485,6 +521,10 @@ class Content_Tagger
                 $args['userId'] = $this->_userManager->ensureUsers($args['userId']);
                 $sql .= ' AND tagged.user_id IN (' . implode(', ', $args['userId']) . ')';
             }
+        }
+
+        if (empty($sql)) {
+            return [];
         }
 
         if (isset($args['limit'])) {
@@ -582,10 +622,16 @@ class Content_Tagger
         $sql = 'SELECT tagged.object_id AS object_id, MAX(created) AS created FROM ' . $this->_t('tagged') . ' tagged';
         if (isset($args['typeId'])) {
             $args['typeId'] = current($this->_typeManager->ensureTypes($args['typeId']));
+            if ($args['typeId'] === false) {
+                throw new Content_Exception('Failed to ensure type.');
+            }
             $sql .= ' INNER JOIN ' . $this->_t('objects') . ' objects ON tagged.object_id = objects.object_id AND objects.type_id = ' . (int) $args['typeId'];
         }
         if (isset($args['userId'])) {
             $args['userId'] = current($this->_userManager->ensureUsers($args['userId']));
+            if ($args['userId'] === false) {
+                throw new Content_Exception('Failed to ensure user.');
+            }
             $sql .= ' WHERE tagged.user_id = ' . (int) $args['userId'];
         }
         $sql .= ' GROUP BY tagged.object_id ORDER BY created DESC';
@@ -608,6 +654,9 @@ class Content_Tagger
             $sql = 'SELECT t.user_id, user_name FROM ' . $this->_t('tagged') . ' t INNER JOIN ' . $this->_t('users') . ' u ON t.user_id = u.user_id WHERE object_id = ' . (int) $args['objectId'];
         } elseif (isset($args['userId'])) {
             $args['userId'] = current($this->_userManager->ensureUsers($args['userId']));
+            if ($args['userId'] === false) {
+                throw new Content_Exception('Failed to ensure user.');
+            }
             $radius = isset($args['radius']) ? (int) $args['radius'] : $this->_defaultRadius;
             $sql = 'SELECT others.user_id, user_name FROM ' . $this->_t('tagged') . ' others INNER JOIN ' . $this->_t('users') . ' u ON u.user_id = others.user_id INNER JOIN (SELECT tag_id FROM ' . $this->_t('tagged') . ' WHERE user_id = ' . (int) $args['userId'] . ' GROUP BY tag_id HAVING COUNT(tag_id) >= ' . $radius . ') self ON others.tag_id = self.tag_id GROUP BY others.user_id';
         } elseif (isset($args['tagId'])) {
@@ -648,6 +697,10 @@ class Content_Tagger
             }
         }
 
+        if (empty($sql)) {
+            return [];
+        }
+
         if (isset($args['limit'])) {
             $sql = $this->_db->addLimitOffset($sql, ['limit' => $args['limit'], 'offset' => $args['offset'] ?? 0]);
         }
@@ -670,6 +723,9 @@ class Content_Tagger
         $sql = 'SELECT tagged.user_id AS user_id, MAX(created) AS created FROM ' . $this->_t('tagged') . ' tagged';
         if (isset($args['typeId'])) {
             $args['typeId'] = current($this->_typeManager->ensureTypes($args['typeId']));
+            if ($args['typeId'] === false) {
+                throw new Content_Exception('Failed to ensure type.');
+            }
             $sql .= ' INNER JOIN ' . $this->_t('objects') . ' objects ON tagged.object_id = objects.object_id AND objects.type_id = ' . (int) $args['typeId'];
         }
         $sql .= ' GROUP BY tagged.user_id ORDER BY created DESC';
@@ -687,6 +743,9 @@ class Content_Tagger
     public function getSimilarUsers($args)
     {
         $args['userId'] = current($this->_userManager->ensureUsers($args['userId']));
+        if ($args['userId'] === false) {
+            throw new Content_Exception('Failed to ensure user.');
+        }
         $radius = isset($args['radius']) ? (int) $args['radius'] : $this->_defaultRadius;
         $sql = 'SELECT others.user_id, (others.count - self.count) AS rank FROM ' . $this->_t('user_tag_stats') . ' others INNER JOIN (SELECT tag_id, count FROM ' . $this->_t('user_tag_stats') . ' WHERE user_id = ' . (int) $args['userId'] . ' AND count >= ' . $radius . ') self ON others.tag_id = self.tag_id ORDER BY rank DESC';
 
@@ -838,10 +897,17 @@ class Content_Tagger
     protected function _ensureObject($object)
     {
         if (is_array($object)) {
+            $typeId = current($this->_typeManager->ensureTypes($object['type']));
+            if ($typeId === false) {
+                throw new Content_Exception('Failed to ensure type.');
+            }
             $object = current($this->_objectManager->ensureObjects(
                 $object['object'],
-                (int) current($this->_typeManager->ensureTypes($object['type']))
+                (int) $typeId
             ));
+            if ($object === false) {
+                throw new Content_Exception('Failed to ensure object.');
+            }
         }
 
         return (int) $object;

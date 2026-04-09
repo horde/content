@@ -74,6 +74,9 @@ class Content_Objects_Manager
     public function exists($objects, $type)
     {
         $type = current($this->_typeManager->ensureTypes($type));
+        if ($type === false) {
+            throw new Content_Exception('Failed to ensure type.');
+        }
         if (!is_array($objects)) {
             $objects = [$objects];
         }
@@ -120,6 +123,9 @@ class Content_Objects_Manager
     public function delete(array $objects, $type)
     {
         $type = current($this->_typeManager->ensureTypes($type));
+        if ($type === false) {
+            throw new Content_Exception('Failed to ensure type.');
+        }
 
         // Ensure we take the object as a string indentifier.
         foreach ($objects as &$object) {
@@ -162,6 +168,9 @@ class Content_Objects_Manager
         $objectName = [];
 
         $type = current($this->_typeManager->ensureTypes($type));
+        if ($type === false) {
+            throw new Content_Exception('Failed to ensure type.');
+        }
 
         // Anything already typed as an integer is assumed to be an object id.
         foreach ($objects as $objectIndex => $object) {

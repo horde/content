@@ -60,7 +60,6 @@ class Content_Users_Manager
         // Get the ids for any users that already exist.
         try {
             if (count($userName)) {
-                $userName;
                 $sql = 'SELECT user_id, user_name FROM ' . $this->_t('users')
                     . ' WHERE user_name IN (' . implode(',', array_map([$this, 'toDriver'], array_keys($userName))) . ')';
 

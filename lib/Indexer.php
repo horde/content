@@ -75,10 +75,17 @@ class Content_Indexer
     protected function _ensureObject($object)
     {
         if (is_array($object)) {
+            $typeId = current($this->_typeManager->ensureTypes($object['type']));
+            if ($typeId === false) {
+                throw new Content_Exception('Failed to ensure type.');
+            }
             $object = current($this->_objectManager->ensureObjects(
                 $object['object'],
-                (int) current($this->_typeManager->ensureTypes($object['type']))
+                (int) $typeId
             ));
+            if ($object === false) {
+                throw new Content_Exception('Failed to ensure object.');
+            }
         }
 
         return (int) $object;
