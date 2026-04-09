@@ -12,8 +12,8 @@ class Content_Sql_Pdo_MysqlTest extends Content_Test_Sql_Base
 {
     public static function setUpBeforeClass()
     {
-        if (!extension_loaded('pdo') ||
-            !in_array('mysql', PDO::getAvailableDrivers())) {
+        if (!extension_loaded('pdo')
+            || !in_array('mysql', PDO::getAvailableDrivers())) {
             self::$reason = 'No mysql extension or no mysql PDO driver';
             return;
         }

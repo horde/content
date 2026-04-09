@@ -12,8 +12,8 @@ class Content_Sql_Pdo_PgsqlTest extends Content_Test_Sql_Base
 {
     public static function setUpBeforeClass()
     {
-        if (!extension_loaded('pdo') ||
-            !in_array('pgsql', PDO::getAvailableDrivers())) {
+        if (!extension_loaded('pdo')
+            || !in_array('pgsql', PDO::getAvailableDrivers())) {
             self::$reason = 'No pgsql extension or no pgsql PDO driver';
             return;
         }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2008-2017 Horde LLC (http://www.horde.org/)
+ * Copyright 2008-2026 Horde LLC (http://www.horde.org/)
  *
  * @author   Chuck Hagenbuch <chuck@horde.org>
  * @author   Michael J. Rubinsky <mrubinsk@horde.org>
@@ -410,7 +410,7 @@ class Content_Tagger
      */
     public function getObjects($args)
     {
-	$sql = '';
+        $sql = '';
         if (isset($args['objectId'])) {
             if (is_array($args['objectId'])) {
                 $args['objectId'] = current($this->_objectManager->ensureObjects(
@@ -419,9 +419,9 @@ class Content_Tagger
                 ));
             }
 
-            $radius = isset($args['radius']) ?
-                (int) $args['radius'] :
-                $this->_defaultRadius;
+            $radius = isset($args['radius'])
+                ? (int) $args['radius']
+                : $this->_defaultRadius;
             $inner = $this->_db->addLimitOffset(
                 'SELECT tag_id, object_id FROM ' . $this->_t('tagged')
                     . ' WHERE object_id = ' . (int) $args['objectId'],
@@ -602,7 +602,7 @@ class Content_Tagger
      */
     public function getUsers($args)
     {
-	$sql = '';
+        $sql = '';
         if (isset($args['objectId'])) {
             $args['objectId'] = $this->_ensureObject($args['objectId']);
             $sql = 'SELECT t.user_id, user_name FROM ' . $this->_t('tagged') . ' t INNER JOIN ' . $this->_t('users') . ' u ON t.user_id = u.user_id WHERE object_id = ' . (int) $args['objectId'];
