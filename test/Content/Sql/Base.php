@@ -175,7 +175,7 @@ class Content_Test_Sql_Base extends Content_Test_Base
         $this->_testUntag();
     }
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$injector = new Horde_Injector(new Horde_Injector_TopLevel());
         self::$injector->setInstance('Horde_Db_Adapter', self::$db);
@@ -193,7 +193,7 @@ class Content_Test_Sql_Base extends Content_Test_Base
         self::$type_mgr = self::$injector->createInstance('Content_Types_Manager');
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         if (self::$migrator) {
             self::$migrator->down();
@@ -202,7 +202,7 @@ class Content_Test_Sql_Base extends Content_Test_Base
         parent::tearDownAfterClass();
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!self::$db) {
             $this->markTestSkipped(self::$reason);

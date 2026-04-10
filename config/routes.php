@@ -1,42 +1,57 @@
 <?php
 
 /**
+ * Content application routes.
+ *
+ * Copyright 2008-2026 Horde LLC (http://www.horde.org/)
+ *
+ * See the enclosed file LICENSE for license information (BSD). If you
+ * did not receive this file, see http://www.horde.org/licenses/bsd.
+ *
+ * @category Horde
+ * @package  Content
+ *
  * References:
- * http://code.google.com/apis/gdata/docs/2.0/reference.html#Queries
+ *   http://code.google.com/apis/gdata/docs/2.0/reference.html#Queries
  */
 
-// List tags. With no parameters, lists all tags. With no file extension, uses
-// the default format. Available query parameters:
-//   q:         do a starts-with search on tag text
-//   typeId:    restrict matches to tags that have been applied to objects with type $typeId
-//   userId:    restrict matches to tags that have been applied by $userId
-//   objectId:  restrict matches to tags that have been applied to $objectId
-$mapper->connect('tags', ['controller' => 'tag', 'action' => 'searchTags']);
-$mapper->connect('tags.:(format)', ['controller' => 'tag', 'action' => 'searchTags']);
+use Horde\Content\Handler\SearchTagsHandler;
+use Horde\Content\Handler\RecentTagsHandler;
+use Horde\Content\Handler\TagHandler;
+use Horde\Content\Handler\UntagHandler;
 
-// Most recent tags. Available query parameters:
-//   typeId:    restrict matches to tags that have been applied to objects with type $typeId
-//   userId:    restrict matches to tags that have been applied by $userId
-$mapper->connect('tags/recent', ['controller' => 'tag', 'action' => 'recentTags']);
-$mapper->connect('tags/recent.:(format)', ['controller' => 'tag', 'action' => 'recentTags']);
+// List tags. With no parameters, lists all tags.
+// Available query parameters:
+//   q:         starts-with search on tag text
+//   typeId:    restrict to tags applied to objects with type $typeId
+//   userId:    restrict to tags applied by $userId
+//   objectId:  restrict to tags applied to $objectId
+//   format:    response format (json, html, atom, rss)
+$mapper->buildRoute(uri: '/tags', name: 'SearchTags')
+    ->withController(SearchTagsHandler::class)
+    ->get()
+    ->add();
 
-// List objects. At least a content type, or more specific parameters, are
-// required; listing all objects is not allowed.
-$mapper->connect('objects', ['controller' => 'tag', 'action' => 'searchObjects']);
-$mapper->connect('objects.:(format)', ['controller' => 'tag', 'action' => 'searchObjects']);
+// Most recent tags.
+// Available query parameters:
+//   limit:     maximum number of tags (default 10)
+//   offset:    result offset for pagination
+//   typeId:    restrict to tags applied to objects with type $typeId
+//   userId:    restrict to tags applied by $userId
+//   format:    response format (json, html, atom, rss)
+$mapper->buildRoute(uri: '/tags/recent', name: 'RecentTags')
+    ->withController(RecentTagsHandler::class)
+    ->get()
+    ->add();
 
-// List users. Specific parameters are required as listing all users is not
-// allowed.
-$mapper->connect('users', ['controller' => 'tag', 'action' => 'searchUsers']);
-$mapper->connect('users.:(format)', ['controller' => 'tag', 'action' => 'searchUsers']);
+// Tag an object. Required POST parameters: userId, objectId, tags, typeId.
+$mapper->buildRoute(uri: '/tag', name: 'Tag')
+    ->withController(TagHandler::class)
+    ->withMethods(['POST', 'PUT'])
+    ->add();
 
-
-// Tag an object. Required POST parameters are: tags (array or string list) and
-// objectId. userId is inferred from the authenticated user:
-$mapper->connect('tag', ['controller' => 'tag', 'action' => 'tag',
-    'conditions' => ['method' => ['POST', 'PUT']]]);
-
-// Untag an object. Required POST parameters are: tags (array or string list)
-// and objectId. userId is inferred from the authenticated user:
-$mapper->connect('untag', ['controller' => 'tag', 'action' => 'untag',
-    'conditions' => ['method' => ['POST', 'DELETE']]]);
+// Untag an object. Required POST parameters: userId, objectId, tags, typeId.
+$mapper->buildRoute(uri: '/untag', name: 'Untag')
+    ->withController(UntagHandler::class)
+    ->withMethods(['POST', 'DELETE'])
+    ->add();
