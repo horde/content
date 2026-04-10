@@ -71,7 +71,11 @@ class TagController extends Content_ApplicationController
             case 'atom':
             case 'rss':
                 $method = '_' . $this->_action . 'Feed';
-                $this->$method();
+                if (method_exists($this, $method)) {
+                    $this->$method();
+                } else {
+                    $this->renderText(json_encode($this->results));
+                }
                 break;
 
             case 'json':
