@@ -598,7 +598,7 @@ class Content_Tagger
         $tagObjects = $this->getTags(['objectId' => $object_id]);
         $tagArray = array_keys($tagObjects);
         $numTags = count($tagArray);
-        if ($numTags == 0) {
+        if ($numTags === 0) {
             return []; // Return empty set of matches
         }
 
@@ -685,7 +685,6 @@ class Content_Tagger
             $sql = 'SELECT others.user_id, user_name FROM ' . $this->_t('tagged') . ' others INNER JOIN ' . $this->_t('users') . ' u ON u.user_id = others.user_id INNER JOIN (SELECT tag_id FROM ' . $this->_t('tagged') . ' WHERE user_id = ' . (int) $args['userId'] . ' GROUP BY tag_id HAVING COUNT(tag_id) >= ' . $radius . ') self ON others.tag_id = self.tag_id GROUP BY others.user_id';
         } elseif (isset($args['tagId'])) {
             $tags = $this->ensureTags($args['tagId']);
-            //$tags = is_array($args['tagId']) ? array_values($args['tagId']) : array($args['tagId']);
             $count = count($tags);
             if (!$count) {
                 return [];
@@ -906,6 +905,9 @@ class Content_Tagger
 
         /* Note that we don't convertCharset here, it's done in listTagInfo */
         $tags = $this->_db->selectAssoc($sql);
+        if (!is_array($tags)) {
+            return [];
+        }
         foreach ($tags as $key => &$value) {
             $value = Horde_String::convertCharset($value, $this->_db->getOption('charset'), 'UTF-8');
         }
