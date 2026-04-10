@@ -1,4 +1,22 @@
 ---
+3.0.0-beta1:
+  api: 3.0.0-beta1
+  state:
+    release: beta
+    api: beta
+  date: 2026-04-10
+  license:
+    identifier: BSD-2-Clause
+    uri: https://spdx.org/licenses/BSD-2-Clause.html
+  notes: |-
+    docs: User-facing endpoints and application level usage
+    refactor: Turn Horde_Controllers into PSR-7/15 controllers
+    fix: If we don't understand the format, render json
+    fix: Be more intelligent about constructing the answer format
+    fix: Make stricter comparisons to avoid typing issues
+    fix: Make the Content_Exception messages more unique and useful in debugging
+    fix: Add guards for null or unsuitable data in many places
+    style: php-cs-fixer
 3.0.0-alpha7:
   api: 3.0.0-alpha1
   state:
