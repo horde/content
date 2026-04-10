@@ -92,8 +92,8 @@ class TagController extends Content_ApplicationController
             ];
         }
 
-        $format = $this->_request->getFormat();
-        $class = 'Horde_Feed_' . ucfirst((string) $this->_request->getFormat());
+        $format = (string) $this->_request->getFormat();
+        $class = 'Horde_Feed_' . ucfirst($format);
         $feed = new $class([
             'id' => 'tags/recent', /* @TODO Use routes to get url to this search */
             'title' => 'Recent tags',
@@ -101,7 +101,8 @@ class TagController extends Content_ApplicationController
             'entry' => $entries,
 
         ]);
-        header('Content-type: ' . $format->string);
+        $contentType = ($format === 'atom') ? 'application/atom+xml' : 'application/rss+xml';
+        header('Content-type: ' . $contentType);
         $this->renderText($feed->saveXml());
     }
 
@@ -116,8 +117,8 @@ class TagController extends Content_ApplicationController
             ];
         }
 
-        $format = $this->_request->getFormat();
-        $class = 'Horde_Feed_' . ucfirst((string) $this->_request->getFormat());
+        $format = (string) $this->_request->getFormat();
+        $class = 'Horde_Feed_' . ucfirst($format);
         $feed = new $class([
             'id' => 'objects/recent', /* @TODO Use routes to get url to this search */
             'title' => 'Recent objects',
@@ -125,7 +126,8 @@ class TagController extends Content_ApplicationController
             'entry' => $entries,
 
         ]);
-        header('Content-type: ' . $format->string);
+        $contentType = ($format === 'atom') ? 'application/atom+xml' : 'application/rss+xml';
+        header('Content-type: ' . $contentType);
         $this->renderText($feed->saveXml());
     }
 
@@ -140,8 +142,8 @@ class TagController extends Content_ApplicationController
             ];
         }
 
-        $format = $this->_request->getFormat();
-        $class = 'Horde_Feed_' . ucfirst((string) $this->_request->getFormat());
+        $format = (string) $this->_request->getFormat();
+        $class = 'Horde_Feed_' . ucfirst($format);
         $feed = new $class([
             'id' => 'users/recent', /* @TODO Use routes to get url to this search */
             'title' => 'Recent users',
@@ -149,7 +151,8 @@ class TagController extends Content_ApplicationController
             'entry' => $entries,
 
         ]);
-        header('Content-type: ' . $format->string);
+        $contentType = ($format === 'atom') ? 'application/atom+xml' : 'application/rss+xml';
+        header('Content-type: ' . $contentType);
         $this->renderText($feed->saveXml());
     }
 
