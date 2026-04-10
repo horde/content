@@ -77,17 +77,41 @@ class Content_Indexer
         if (is_array($object)) {
             $typeId = current($this->_typeManager->ensureTypes($object['type']));
             if ($typeId === false) {
-                throw new Content_Exception('Failed to ensure type.');
+                throw new Content_Exception('Tried to ensure an empty list of types, called from ' . $this->_externalCaller());
             }
             $object = current($this->_objectManager->ensureObjects(
                 $object['object'],
                 (int) $typeId
             ));
             if ($object === false) {
-                throw new Content_Exception('Failed to ensure object.');
+                throw new Content_Exception('Tried to ensure an empty list of objects, called from ' . $this->_externalCaller());
             }
         }
 
         return (int) $object;
+    }
+
+    /**
+     * Return the first caller outside of the Content package for
+     * diagnostic messages.
+     *
+     * @return string  A "Class::method (file:line)" string or "unknown caller".
+     */
+    private function _externalCaller(): string
+    {
+        foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $frame) {
+            $class = $frame['class'] ?? '';
+            if ($class !== '' && !str_starts_with($class, 'Content_')) {
+                $location = isset($frame['file'])
+                    ? ' (' . $frame['file'] . ':' . $frame['line'] . ')'
+                    : '';
+                return $class . '::' . ($frame['function'] ?? '?') . $location;
+            }
+            if ($class === '' && isset($frame['file']) && !str_contains($frame['file'], '/Content/') && !str_contains($frame['file'], '/content/lib/')) {
+                return ($frame['function'] ?? '?') . ' (' . $frame['file'] . ':' . $frame['line'] . ')';
+            }
+        }
+
+        return 'unknown caller';
     }
 }

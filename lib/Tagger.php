@@ -85,6 +85,30 @@ class Content_Tagger
     }
 
     /**
+     * Return the first caller outside of the Content package for
+     * diagnostic messages.
+     *
+     * @return string  A "Class::method (file:line)" string or "unknown caller".
+     */
+    private function _externalCaller(): string
+    {
+        foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $frame) {
+            $class = $frame['class'] ?? '';
+            if ($class !== '' && !str_starts_with($class, 'Content_')) {
+                $location = isset($frame['file'])
+                    ? ' (' . $frame['file'] . ':' . $frame['line'] . ')'
+                    : '';
+                return $class . '::' . ($frame['function'] ?? '?') . $location;
+            }
+            if ($class === '' && isset($frame['file']) && !str_contains($frame['file'], '/Content/') && !str_contains($frame['file'], '/content/lib/')) {
+                return ($frame['function'] ?? '?') . ' (' . $frame['file'] . ':' . $frame['line'] . ')';
+            }
+        }
+
+        return 'unknown caller';
+    }
+
+    /**
      * Adds a tag or several tags to an object_id. This method does not
      * remove other tags.
      *
@@ -110,7 +134,7 @@ class Content_Tagger
         // Validate/ensure the parameters
         $userId = current($this->_userManager->ensureUsers($userId));
         if ($userId === false) {
-            throw new Content_Exception('Failed to ensure user.');
+            throw new Content_Exception('Tried to ensure an empty list of users, called from ' . $this->_externalCaller());
         }
 
         foreach ($this->ensureTags($tags) as $tagId) {
@@ -149,7 +173,7 @@ class Content_Tagger
         // Ensure parameters
         $userId = current($this->_userManager->ensureUsers($userId));
         if ($userId === false) {
-            throw new Content_Exception('Failed to ensure user.');
+            throw new Content_Exception('Tried to ensure an empty list of users, called from ' . $this->_externalCaller());
         }
         $objectId = $this->_ensureObject($objectId);
 
@@ -273,24 +297,24 @@ class Content_Tagger
         } elseif (isset($args['userId']) && isset($args['typeId'])) {
             $args['userId'] = current($this->_userManager->ensureUsers($args['userId']));
             if ($args['userId'] === false) {
-                throw new Content_Exception('Failed to ensure user.');
+                throw new Content_Exception('Tried to ensure an empty list of users, called from ' . $this->_externalCaller());
             }
             $args['typeId'] = current($this->_typeManager->ensureTypes($args['typeId']));
             if ($args['typeId'] === false) {
-                throw new Content_Exception('Failed to ensure type.');
+                throw new Content_Exception('Tried to ensure an empty list of types, called from ' . $this->_externalCaller());
             }
             $sql = 'SELECT DISTINCT t.tag_id AS tag_id, tag_name FROM ' . $this->_t('tags') . ' t INNER JOIN ' . $this->_t('tagged') . ' tagged ON t.tag_id = tagged.tag_id AND tagged.user_id = ' . (int) $args['userId'] . ' INNER JOIN ' . $this->_t('objects') . ' objects ON tagged.object_id = objects.object_id AND objects.type_id = ' . (int) $args['typeId'];
         } elseif (isset($args['userId'])) {
             $args['userId'] = current($this->_userManager->ensureUsers($args['userId']));
             if ($args['userId'] === false) {
-                throw new Content_Exception('Failed to ensure user.');
+                throw new Content_Exception('Tried to ensure an empty list of users, called from ' . $this->_externalCaller());
             }
             $sql = 'SELECT DISTINCT t.tag_id AS tag_id, tag_name FROM ' . $this->_t('tagged') . ' tagged INNER JOIN ' . $this->_t('tags') . ' t ON tagged.tag_id = t.tag_id WHERE tagged.user_id = ' . (int) $args['userId'];
             $haveWhere = true;
         } elseif (isset($args['typeId'])) {
             $args['typeId'] = current($this->_typeManager->ensureTypes($args['typeId']));
             if ($args['typeId'] === false) {
-                throw new Content_Exception('Failed to ensure type.');
+                throw new Content_Exception('Tried to ensure an empty list of types, called from ' . $this->_externalCaller());
             }
             $sql = 'SELECT DISTINCT t.tag_id AS tag_id, tag_name FROM ' . $this->_t('tagged') . ' tagged INNER JOIN ' . $this->_t('objects') . ' objects ON tagged.object_id = objects.object_id AND objects.type_id = ' . (int) $args['typeId'] . ' INNER JOIN ' . $this->_t('tags') . ' t ON tagged.tag_id = t.tag_id';
         } elseif (isset($args['tagId'])) {
@@ -347,7 +371,7 @@ class Content_Tagger
         } elseif (isset($args['userId']) && isset($args['typeId'])) {
             $args['userId'] = current($this->_userManager->ensureUsers($args['userId']));
             if ($args['userId'] === false) {
-                throw new Content_Exception('Failed to ensure user.');
+                throw new Content_Exception('Tried to ensure an empty list of users, called from ' . $this->_externalCaller());
             }
             $args['typeId'] = $this->_typeManager->ensureTypes($args['typeId']);
             // This doesn't use a stat table, so may be slow.
@@ -355,7 +379,7 @@ class Content_Tagger
         } elseif (isset($args['userId'])) {
             $args['userId'] = current($this->_userManager->ensureUsers($args['userId']));
             if ($args['userId'] === false) {
-                throw new Content_Exception('Failed to ensure user.');
+                throw new Content_Exception('Tried to ensure an empty list of users, called from ' . $this->_externalCaller());
             }
             $sql = 'SELECT t.tag_id AS tag_id, tag_name, count FROM ' . $this->_t('tagged') . ' tagged INNER JOIN ' . $this->_t('tags') . ' t ON tagged.tag_id = t.tag_id INNER JOIN ' . $this->_t('user_tag_stats') . ' uts ON t.tag_id = uts.tag_id AND uts.user_id = ' . (int) $args['userId'] . ' GROUP BY t.tag_id, tag_name, count';
         } elseif (isset($args['tagIds']) && isset($args['typeId'])) {
@@ -406,14 +430,14 @@ class Content_Tagger
         if (isset($args['typeId'])) {
             $args['typeId'] = current($this->_typeManager->ensureTypes($args['typeId']));
             if ($args['typeId'] === false) {
-                throw new Content_Exception('Failed to ensure type.');
+                throw new Content_Exception('Tried to ensure an empty list of types, called from ' . $this->_externalCaller());
             }
             $sql .= ' INNER JOIN ' . $this->_t('objects') . ' objects ON tagged.object_id = objects.object_id AND objects.type_id = ' . (int) $args['typeId'];
         }
         if (isset($args['userId'])) {
             $args['userId'] = current($this->_userManager->ensureUsers($args['userId']));
             if ($args['userId'] === false) {
-                throw new Content_Exception('Failed to ensure user.');
+                throw new Content_Exception('Tried to ensure an empty list of users, called from ' . $this->_externalCaller());
             }
             $sql .= ' WHERE tagged.user_id = ' . (int) $args['userId'];
         }
@@ -451,7 +475,7 @@ class Content_Tagger
                     $args['objectId']['type']
                 ));
                 if ($args['objectId'] === false) {
-                    throw new Content_Exception('Failed to ensure object.');
+                    throw new Content_Exception('Tried to ensure an empty list of objects, called from ' . $this->_externalCaller());
                 }
             }
 
@@ -623,14 +647,14 @@ class Content_Tagger
         if (isset($args['typeId'])) {
             $args['typeId'] = current($this->_typeManager->ensureTypes($args['typeId']));
             if ($args['typeId'] === false) {
-                throw new Content_Exception('Failed to ensure type.');
+                throw new Content_Exception('Tried to ensure an empty list of types, called from ' . $this->_externalCaller());
             }
             $sql .= ' INNER JOIN ' . $this->_t('objects') . ' objects ON tagged.object_id = objects.object_id AND objects.type_id = ' . (int) $args['typeId'];
         }
         if (isset($args['userId'])) {
             $args['userId'] = current($this->_userManager->ensureUsers($args['userId']));
             if ($args['userId'] === false) {
-                throw new Content_Exception('Failed to ensure user.');
+                throw new Content_Exception('Tried to ensure an empty list of users, called from ' . $this->_externalCaller());
             }
             $sql .= ' WHERE tagged.user_id = ' . (int) $args['userId'];
         }
@@ -655,7 +679,7 @@ class Content_Tagger
         } elseif (isset($args['userId'])) {
             $args['userId'] = current($this->_userManager->ensureUsers($args['userId']));
             if ($args['userId'] === false) {
-                throw new Content_Exception('Failed to ensure user.');
+                throw new Content_Exception('Tried to ensure an empty list of users, called from ' . $this->_externalCaller());
             }
             $radius = isset($args['radius']) ? (int) $args['radius'] : $this->_defaultRadius;
             $sql = 'SELECT others.user_id, user_name FROM ' . $this->_t('tagged') . ' others INNER JOIN ' . $this->_t('users') . ' u ON u.user_id = others.user_id INNER JOIN (SELECT tag_id FROM ' . $this->_t('tagged') . ' WHERE user_id = ' . (int) $args['userId'] . ' GROUP BY tag_id HAVING COUNT(tag_id) >= ' . $radius . ') self ON others.tag_id = self.tag_id GROUP BY others.user_id';
@@ -724,7 +748,7 @@ class Content_Tagger
         if (isset($args['typeId'])) {
             $args['typeId'] = current($this->_typeManager->ensureTypes($args['typeId']));
             if ($args['typeId'] === false) {
-                throw new Content_Exception('Failed to ensure type.');
+                throw new Content_Exception('Tried to ensure an empty list of types, called from ' . $this->_externalCaller());
             }
             $sql .= ' INNER JOIN ' . $this->_t('objects') . ' objects ON tagged.object_id = objects.object_id AND objects.type_id = ' . (int) $args['typeId'];
         }
@@ -744,7 +768,7 @@ class Content_Tagger
     {
         $args['userId'] = current($this->_userManager->ensureUsers($args['userId']));
         if ($args['userId'] === false) {
-            throw new Content_Exception('Failed to ensure user.');
+            throw new Content_Exception('Tried to ensure an empty list of users, called from ' . $this->_externalCaller());
         }
         $radius = isset($args['radius']) ? (int) $args['radius'] : $this->_defaultRadius;
         $sql = 'SELECT others.user_id, (others.count - self.count) AS rank FROM ' . $this->_t('user_tag_stats') . ' others INNER JOIN (SELECT tag_id, count FROM ' . $this->_t('user_tag_stats') . ' WHERE user_id = ' . (int) $args['userId'] . ' AND count >= ' . $radius . ') self ON others.tag_id = self.tag_id ORDER BY rank DESC';
@@ -899,14 +923,14 @@ class Content_Tagger
         if (is_array($object)) {
             $typeId = current($this->_typeManager->ensureTypes($object['type']));
             if ($typeId === false) {
-                throw new Content_Exception('Failed to ensure type.');
+                throw new Content_Exception('Tried to ensure an empty list of types, called from ' . $this->_externalCaller());
             }
             $object = current($this->_objectManager->ensureObjects(
                 $object['object'],
                 (int) $typeId
             ));
             if ($object === false) {
-                throw new Content_Exception('Failed to ensure object.');
+                throw new Content_Exception('Tried to ensure an empty list of objects, called from ' . $this->_externalCaller());
             }
         }
 

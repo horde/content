@@ -75,7 +75,7 @@ class Content_Objects_Manager
     {
         $type = current($this->_typeManager->ensureTypes($type));
         if ($type === false) {
-            throw new Content_Exception('Failed to ensure type.');
+            throw new Content_Exception('Tried to ensure an empty list of types, called from ' . $this->_externalCaller());
         }
         if (!is_array($objects)) {
             $objects = [$objects];
@@ -124,7 +124,7 @@ class Content_Objects_Manager
     {
         $type = current($this->_typeManager->ensureTypes($type));
         if ($type === false) {
-            throw new Content_Exception('Failed to ensure type.');
+            throw new Content_Exception('Tried to ensure an empty list of types, called from ' . $this->_externalCaller());
         }
 
         // Ensure we take the object as a string indentifier.
@@ -169,7 +169,7 @@ class Content_Objects_Manager
 
         $type = current($this->_typeManager->ensureTypes($type));
         if ($type === false) {
-            throw new Content_Exception('Failed to ensure type.');
+            throw new Content_Exception('Tried to ensure an empty list of types, called from ' . $this->_externalCaller());
         }
 
         // Anything already typed as an integer is assumed to be an object id.
@@ -208,6 +208,30 @@ class Content_Objects_Manager
         }
 
         return $objectIds;
+    }
+
+    /**
+     * Return the first caller outside of the Content package for
+     * diagnostic messages.
+     *
+     * @return string  A "Class::method (file:line)" string or "unknown caller".
+     */
+    private function _externalCaller(): string
+    {
+        foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $frame) {
+            $class = $frame['class'] ?? '';
+            if ($class !== '' && !str_starts_with($class, 'Content_')) {
+                $location = isset($frame['file'])
+                    ? ' (' . $frame['file'] . ':' . $frame['line'] . ')'
+                    : '';
+                return $class . '::' . ($frame['function'] ?? '?') . $location;
+            }
+            if ($class === '' && isset($frame['file']) && !str_contains($frame['file'], '/Content/') && !str_contains($frame['file'], '/content/lib/')) {
+                return ($frame['function'] ?? '?') . ' (' . $frame['file'] . ':' . $frame['line'] . ')';
+            }
+        }
+
+        return 'unknown caller';
     }
 
     /**
