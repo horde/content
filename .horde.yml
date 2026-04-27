@@ -37,6 +37,7 @@ dependencies:
       horde/db: ^3
       horde/injector: ^3
       horde/rdo: ^3
+      horde/rpc: ^3
       horde/util: ^3
     ext:
       gettext: '*'
