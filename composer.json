@@ -20,7 +20,7 @@
         "tagger",
         "tags"
     ],
-    "time": "2026-04-10",
+    "time": "2026-04-27",
     "repositories": [],
     "require": {
         "horde/horde-installer-plugin": "dev-FRAMEWORK_6_0 || ^3 || ^2",
@@ -31,6 +31,7 @@
         "horde/db": "^3 || dev-FRAMEWORK_6_0",
         "horde/injector": "^3 || dev-FRAMEWORK_6_0",
         "horde/rdo": "^3 || dev-FRAMEWORK_6_0",
+        "horde/rpc": "^3 || dev-FRAMEWORK_6_0",
         "horde/util": "^3 || dev-FRAMEWORK_6_0",
         "ext-gettext": "*",
         "ext-json": "*"

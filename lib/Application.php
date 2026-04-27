@@ -35,5 +35,5 @@ class Content_Application extends Horde_Registry_Application
 {
     /**
      */
-    public $version = '3.0.0-beta1';
+    public $version = '3.0.0-beta2';
 }
