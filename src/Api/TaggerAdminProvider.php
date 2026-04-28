@@ -6,9 +6,9 @@ namespace Horde\Content\Api;
 
 use Content_Tagger;
 use Horde\Rpc\Dispatch\ApiCallContext;
-use Horde\Rpc\Dispatch\ApiProviderInterface;
+use Horde\Rpc\Dispatch\ApiProvider;
 use Horde\Rpc\Dispatch\MethodDescriptor;
-use Horde\Rpc\Dispatch\MethodInvokerInterface;
+use Horde\Rpc\Dispatch\MethodInvoker;
 use Horde\Rpc\Dispatch\Result;
 use RuntimeException;
 
@@ -18,7 +18,7 @@ use RuntimeException;
  * See the enclosed file LICENSE for license information (BSD). If you
  * did not receive this file, see http://www.horde.org/licenses/bsd.
  */
-class TaggerAdminProvider implements ApiProviderInterface, MethodInvokerInterface
+class TaggerAdminProvider implements ApiProvider, MethodInvoker
 {
     /** @var array<string, MethodDescriptor> */
     private readonly array $descriptors;
