@@ -19,6 +19,7 @@ use Horde\Content\Handler\SearchTagsHandler;
 use Horde\Content\Handler\RecentTagsHandler;
 use Horde\Content\Handler\TagHandler;
 use Horde\Content\Handler\UntagHandler;
+use Horde\Core\Middleware\DefaultStack;
 
 // List tags. With no parameters, lists all tags.
 // Available query parameters:
@@ -29,6 +30,7 @@ use Horde\Content\Handler\UntagHandler;
 //   format:    response format (json, html, atom, rss)
 $mapper->buildRoute(uri: '/tags', name: 'SearchTags')
     ->withController(SearchTagsHandler::class)
+    ->withMiddleware(DefaultStack::get())
     ->get()
     ->add();
 
@@ -41,17 +43,20 @@ $mapper->buildRoute(uri: '/tags', name: 'SearchTags')
 //   format:    response format (json, html, atom, rss)
 $mapper->buildRoute(uri: '/tags/recent', name: 'RecentTags')
     ->withController(RecentTagsHandler::class)
+    ->withMiddleware(DefaultStack::get())
     ->get()
     ->add();
 
 // Tag an object. Required POST parameters: userId, objectId, tags, typeId.
 $mapper->buildRoute(uri: '/tag', name: 'Tag')
     ->withController(TagHandler::class)
+    ->withMiddleware(DefaultStack::get())
     ->withMethods(['POST', 'PUT'])
     ->add();
 
 // Untag an object. Required POST parameters: userId, objectId, tags, typeId.
 $mapper->buildRoute(uri: '/untag', name: 'Untag')
     ->withController(UntagHandler::class)
+    ->withMiddleware(DefaultStack::get())
     ->withMethods(['POST', 'DELETE'])
     ->add();
