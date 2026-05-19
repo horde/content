@@ -114,6 +114,19 @@
     uri: http://www.horde.org/licenses/bsd
   notes: |
     Original version string was 3.0.0alpha1
+3.0.0-RC1:
+  api: 3.0.0-RC1
+  state:
+    release: RC
+    api: RC
+  date: 2026-05-19
+  license:
+    identifier: BSD-2-Clause
+    uri: https://spdx.org/licenses/BSD-2-Clause.html
+  notes: |-
+    feat(ui): Add content icon
+    refactor: Explicitly declare the default stack as a prestep to removing fallback logic
+    refactor: Drop the Interface suffix, it was a mistake
 2.0.7:
   api: 2.0.0
   state:
