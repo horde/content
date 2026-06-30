@@ -6,23 +6,21 @@ description: This application provides tagging support for the other Horde appli
 list: ~
 type: application
 authors:
-  -
-    name: Michael J Rubinsky
+  - name: Michael J Rubinsky
     user: mrubinsk
     email: mrubinsk@horde.org
     active: true
     role: lead
-  -
-    name: Chuck Hagenbuch
+  - name: Chuck Hagenbuch
     user: chuck
     email: chuck@horde.org
     active: false
     role: lead
 version:
-  release: 3.0.0-RC1
+  release: 3.0.0
   api: 3.0.0alpha1
 state:
-  release: RC
+  release: stable
   api: alpha
 license:
   identifier: BSD-2-Clause
@@ -63,3 +61,138 @@ keywords:
   - tagger
   - tags
 vendor: horde
+ci-platform:
+  '8.1':
+    - php: '>=7.2'
+    - composer-plugin-api: ^2.2.0
+    - ext-ctype
+    - ext-dom
+    - ext-filter
+    - ext-gettext
+    - ext-hash
+    - ext-iconv
+    - ext-intl
+    - ext-json
+    - ext-libxml
+    - ext-mbstring
+    - ext-openssl
+    - ext-pcre
+    - ext-phar
+    - ext-session
+    - ext-simplexml
+    - ext-spl
+    - ext-tokenizer
+    - ext-xml
+    - ext-xmlwriter
+  '8.2':
+    - php: '>=7.2'
+    - composer-plugin-api: ^2.2.0
+    - ext-ctype
+    - ext-dom
+    - ext-filter
+    - ext-gettext
+    - ext-hash
+    - ext-iconv
+    - ext-intl
+    - ext-json
+    - ext-libxml
+    - ext-mbstring
+    - ext-openssl
+    - ext-pcre
+    - ext-phar
+    - ext-session
+    - ext-simplexml
+    - ext-spl
+    - ext-tokenizer
+    - ext-xml
+    - ext-xmlwriter
+  '8.3':
+    - php: '>=7.2'
+    - composer-plugin-api: ^2.2.0
+    - ext-ctype
+    - ext-dom
+    - ext-filter
+    - ext-gettext
+    - ext-hash
+    - ext-iconv
+    - ext-intl
+    - ext-json
+    - ext-libxml
+    - ext-mbstring
+    - ext-openssl
+    - ext-pcre
+    - ext-phar
+    - ext-session
+    - ext-simplexml
+    - ext-spl
+    - ext-tokenizer
+    - ext-xml
+    - ext-xmlwriter
+  '8.4':
+    - php: '>=7.2'
+    - composer-plugin-api: ^2.2.0
+    - ext-ctype
+    - ext-dom
+    - ext-filter
+    - ext-gettext
+    - ext-hash
+    - ext-iconv
+    - ext-intl
+    - ext-json
+    - ext-libxml
+    - ext-mbstring
+    - ext-openssl
+    - ext-pcre
+    - ext-phar
+    - ext-session
+    - ext-simplexml
+    - ext-spl
+    - ext-tokenizer
+    - ext-xml
+    - ext-xmlwriter
+  '8.5':
+    - php: '>=7.2'
+    - composer-plugin-api: ^2.2.0
+    - ext-ctype
+    - ext-dom
+    - ext-filter
+    - ext-gettext
+    - ext-hash
+    - ext-iconv
+    - ext-intl
+    - ext-json
+    - ext-libxml
+    - ext-mbstring
+    - ext-openssl
+    - ext-pcre
+    - ext-phar
+    - ext-session
+    - ext-simplexml
+    - ext-spl
+    - ext-tokenizer
+    - ext-xml
+    - ext-xmlwriter
+  '8.6':
+    - php: '>=7.2'
+    - composer-plugin-api: ^2.2.0
+    - ext-ctype
+    - ext-dom
+    - ext-filter
+    - ext-gettext
+    - ext-hash
+    - ext-iconv
+    - ext-intl
+    - ext-json
+    - ext-libxml
+    - ext-mbstring
+    - ext-openssl
+    - ext-pcre
+    - ext-phar
+    - ext-session
+    - ext-simplexml
+    - ext-spl
+    - ext-tokenizer
+    - ext-xml
+    - ext-xmlwriter
+ci-platform-flags:
+  needs_installer_plugin: true
